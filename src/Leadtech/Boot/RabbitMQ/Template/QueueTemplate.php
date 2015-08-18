@@ -4,6 +4,7 @@ namespace Boot\RabbitMQ\Template;
 use Boot\RabbitMQ\Serializer\JsonSerializer;
 use Boot\RabbitMQ\Serializer\SerializerInterface;
 use Boot\RabbitMQ\Strategy\QueueStrategy;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection as AbstractAMQPConnection;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -23,6 +24,9 @@ class QueueTemplate
 
     /** @var  EventDispatcher */
     protected $eventDispatcher;
+
+    /** @var AMQPChannel */
+    protected $channel = null;
 
     /** @var  string */
     protected $queueName;
@@ -77,14 +81,17 @@ class QueueTemplate
     }
 
     /**
-     * @param $channelId
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
-    public function createChannel($channelId = null)
+    public function createChannel()
     {
-        return $this->getConnection()->channel(
-            $channelId ?: $this->getChannelId() ?: $this->getQueueName()
-        );
+        if($this->channel === null) {
+            $this->channel = $this->getConnection()->channel(
+                $this->getChannelId() ?: $this->getQueueName()
+            );
+        }
+
+        return $this->channel;
     }
 
     /**

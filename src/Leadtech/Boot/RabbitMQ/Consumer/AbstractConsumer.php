@@ -72,17 +72,15 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
-     * @param string $channelId
-     *
      * @return void
      */
-    public function listen($channelId = null)
+    public function listen()
     {
         // Declare template
         $queueTemplate = $this->queueTemplate;
 
         // Create or reuse existing channel
-        $channel = $queueTemplate->createChannel($channelId);
+        $channel = $queueTemplate->createChannel();
 
         /**
          * indicate interest in consuming messages from a particular queue. When they do
