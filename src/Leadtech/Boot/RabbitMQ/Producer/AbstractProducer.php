@@ -31,7 +31,6 @@ abstract class AbstractProducer implements ProducerInterface
     public function __construct(QueueTemplate $queueTemplate)
     {
         $this->queueTemplate = $queueTemplate;
-        $this->channel = $queueTemplate->createChannel();
     }
 
     /**
@@ -73,4 +72,23 @@ abstract class AbstractProducer implements ProducerInterface
             ])
         );
     }
+
+    /**
+     * @return QueueTemplate
+     */
+    public function getQueueTemplate()
+    {
+        return $this->queueTemplate;
+    }
+
+    /**
+     * @return AMQPChannel
+     */
+    public function getChannel()
+    {
+        // Create channel or reuse the existing one...
+        return $this->queueTemplate->createChannel();
+    }
+
+
 }

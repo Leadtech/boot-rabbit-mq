@@ -35,7 +35,7 @@ class Producer extends AbstractProducer
      */
     protected function doPublish(array $data)
     {
-        $this->channel->basic_publish(
+        $this->getChannel()->basic_publish(
             $this->createMessage($data),
             $this->queueTemplate->getExchangeName(),
             $this->queueTemplate->getRoutingKey(),
