@@ -1,0 +1,23 @@
+{
+  "name": "leadtech/boot-rabbit-mq",
+  "description": "",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Daan Biesterbos",
+      "email": "daanbiesterbos@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "videlalvaro/php-amqplib": "^2.5",
+    "symfony/event-dispatcher": "^2.7",
+    "monolog/monolog": "^1.16"
+  },
+  "autoload": {
+    "psr-4": {
+      "Boot\\": "src/Leadtech/Boot/"
+    }
+  }
+}
