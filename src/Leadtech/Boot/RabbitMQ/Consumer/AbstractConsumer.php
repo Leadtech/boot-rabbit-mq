@@ -26,6 +26,16 @@ abstract class AbstractConsumer implements ConsumerInterface
     private $logger = null;
 
     /**
+     * @param QueueTemplate $queueTemplate
+     * @param string $consumerName
+     */
+    public function __construct(QueueTemplate $queueTemplate, $consumerName = '')
+    {
+        $this->consumerName = $consumerName;
+        $this->queueTemplate = $queueTemplate;
+    }
+
+    /**
      * Implementation of a message handler.  Return true if the process is successful. This will trigger the ack signal if needed.
      * If the process has failed either return false or throw an exception.
      *
@@ -59,21 +69,6 @@ abstract class AbstractConsumer implements ConsumerInterface
 
         // Handle result
         $result ? $this->success($message) : $this->failure($message);
-    }
-
-    /**
-     * @param QueueTemplate $queueTemplate
-     * @param string        $consumerName
-     *
-     * @return static|self
-     */
-    public static function createConsumer(QueueTemplate $queueTemplate, $consumerName = '')
-    {
-        $consumer = new static();
-        $consumer->consumerName = $consumerName;
-        $consumer->queueTemplate = $queueTemplate;
-
-        return $consumer;
     }
 
     /**

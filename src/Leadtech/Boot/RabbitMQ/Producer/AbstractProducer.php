@@ -28,15 +28,10 @@ abstract class AbstractProducer implements ProducerInterface
      *
      * @return static|self
      */
-    public static function createProducer(QueueTemplate $queueTemplate)
+    public function __construct(QueueTemplate $queueTemplate)
     {
-        $producer = new static();
-        $producer->queueTemplate = $queueTemplate;
-
-        // Create or reuse existing channel
-        $producer->channel = $queueTemplate->createChannel();
-
-        return $producer;
+        $this->queueTemplate = $queueTemplate;
+        $this->channel = $queueTemplate->createChannel();
     }
 
     /**
