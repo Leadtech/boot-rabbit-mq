@@ -13,6 +13,13 @@ interface ConsumerInterface
     public function handle(AMQPMessage $message);
 
     /**
+     * @param string $channelId
+     *
+     * @return void
+     */
+    public function listen($channelId = null);
+
+    /**
      * @return QueueTemplate
      */
     public function getQueueTemplate();
