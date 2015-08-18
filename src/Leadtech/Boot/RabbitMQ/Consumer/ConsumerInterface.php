@@ -23,11 +23,4 @@ interface ConsumerInterface
      * @return QueueTemplate
      */
     public function getQueueTemplate();
-
-    /**
-     * @param QueueTemplate $queueTemplate
-     *
-     * @return self
-     */
-    public static function createConsumer(QueueTemplate $queueTemplate);
 }
