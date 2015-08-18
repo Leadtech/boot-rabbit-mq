@@ -15,9 +15,7 @@ class FaultTolerantBehaviour extends QueueStrategy
     public function declareQueue(QueueTemplate $queueTemplate)
     {
         // Create or reuse existing channel
-        $channel = $queueTemplate->getConnection()->channel(
-            $queueTemplate->getChannelId() ?: $queueTemplate->getQueueName()
-        );
+        $channel = $queueTemplate->createChannel();
 
         // Declare queue
         $channel->queue_declare(
@@ -36,9 +34,7 @@ class FaultTolerantBehaviour extends QueueStrategy
     {
         // Create or reuse existing channel. The channel ID should be set, use queue name if the channel has no id.
         // We don't want the channel to be recreated over and over.
-        $channel = $queueTemplate->getConnection()->channel(
-            $queueTemplate->getChannelId() ?: $queueTemplate->getQueueName()
-        );
+        $channel = $queueTemplate->createChannel();
 
         /*
          * don't dispatch a new message to a worker until it has processed and

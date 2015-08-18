@@ -69,15 +69,25 @@ abstract class AbstractConsumer implements ConsumerInterface
      */
     public static function createConsumer(QueueTemplate $queueTemplate, $consumerName = '')
     {
-        // Create or reuse existing channel
-        $channel = $queueTemplate->getConnection()->channel(
-            $queueTemplate->getChannelId() ?: $queueTemplate->getQueueName()
-        );
-
         $consumer = new static();
         $consumer->consumerName = $consumerName;
         $consumer->queueTemplate = $queueTemplate;
 
+        return $consumer;
+    }
+
+    /**
+     * @param string $channelId
+     *
+     * @return void
+     */
+    public function listen($channelId = null)
+    {
+        // Declare template
+        $queueTemplate = $this->queueTemplate;
+
+        // Create or reuse existing channel
+        $channel = $queueTemplate->createChannel($channelId);
 
         /**
          * indicate interest in consuming messages from a particular queue. When they do
@@ -86,16 +96,15 @@ abstract class AbstractConsumer implements ConsumerInterface
          */
         $channel->basic_consume(
             $queueTemplate->getQueueName(),                   #queue
-            $consumerName,                                    #consumer tag - Identifier for the consumer, valid within the current channel. just string
+            $this->consumerName,                              #consumer tag - Identifier for the consumer, valid within the current channel. just string
             false,                                            #no local - TRUE: the server will not send messages to the connection that published them
             !$queueTemplate->getStrategy()->doAckManually(),  #no ack, false - ack turned on, true - off.  send a proper acknowledgment from the worker, once we're done with a task
             false,                                            #exclusive - queues may only be accessed by the current connection
             false,                                            #no wait - TRUE: the server will not respond to the method. The client should not wait for a reply method
-            $consumer                                         #callback
+            $this                                             #callback
         );
-
-        return $consumer;
     }
+
 
     /**
      * @param AMQPMessage $message

@@ -77,6 +77,17 @@ class QueueTemplate
     }
 
     /**
+     * @param $channelId
+     * @return \PhpAmqpLib\Channel\AMQPChannel
+     */
+    public function createChannel($channelId = null)
+    {
+        return $this->getConnection()->channel(
+            $channelId ?: $this->getChannelId() ?: $this->getQueueName()
+        );
+    }
+
+    /**
      * @return AbstractAMQPConnection
      */
     public function getConnection()

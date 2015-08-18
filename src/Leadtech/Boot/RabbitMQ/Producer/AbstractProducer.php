@@ -34,9 +34,7 @@ abstract class AbstractProducer implements ProducerInterface
         $producer->queueTemplate = $queueTemplate;
 
         // Create or reuse existing channel
-        $producer->channel = $queueTemplate->getConnection()->channel(
-            $queueTemplate->getChannelId() ?: $queueTemplate->getQueueName()
-        );
+        $producer->channel = $queueTemplate->createChannel();
 
         return $producer;
     }
