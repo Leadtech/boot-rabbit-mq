@@ -20,7 +20,7 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
     protected $consumer;
 
     /** @var  int   Interval in seconds */
-    protected $interval = 1;
+    protected $interval;
 
     /** @var int  */
     protected $resultState = self::SUCCESS_EXIT_CODE;
