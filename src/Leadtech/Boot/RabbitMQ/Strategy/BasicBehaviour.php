@@ -1,7 +1,6 @@
 <?php
 namespace Boot\RabbitMQ\Strategy;
 
-use Boot\RabbitMQ\RabbitMQ;
 use Boot\RabbitMQ\Template\QueueTemplate;
 use PhpAmqpLib\Message\AMQPMessage;
 

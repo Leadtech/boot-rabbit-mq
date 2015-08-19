@@ -64,16 +64,20 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
             $this->prepareProcess();
 
             // Iterate callbacks.
-            while(count($channel->callbacks)) {
+            while (count($channel->callbacks)) {
 
                 // Execute pre process
                 $this->preProcess();
 
-                // Wait for message
+                // Wait for message. Note that incoming messages are delegated to the injected consumer instance.
+                // For more information see:
+                //  - Boot\RabbitMQ\Consumer\AbstractConsumer::__invoke(AMQPMessage $message)
+                //  - Boot\RabbitMQ\Consumer\ConsumerInterface::handle(AMQPMessage $message)
                 $channel->wait();
 
                 // Execute post process
                 $this->postProcess();
+
             }
 
             // Close channel
