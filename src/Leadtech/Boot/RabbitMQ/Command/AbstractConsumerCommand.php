@@ -2,6 +2,7 @@
 namespace Boot\RabbitMQ\Command;
 
 use Boot\RabbitMQ\Consumer\ConsumerInterface;
+use PhpAmqpLib\Channel\AMQPChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,7 +65,7 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
             $this->prepareProcess();
 
             // Iterate callbacks.
-            while (count($channel->callbacks)) {
+            while ($this->canContinue($channel)) {
 
                 // Execute pre process
                 $this->preProcess();
@@ -89,6 +90,14 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
         return $this->resultState;
     }
 
+    /**
+     * @param AMQPChannel $channel
+     * @return int
+     */
+    protected function canContinue(AMQPChannel $channel)
+    {
+        return count($channel->callbacks);
+    }
 
     /**
      * Connect to RabbitMQ

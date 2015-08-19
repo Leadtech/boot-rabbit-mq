@@ -141,27 +141,11 @@ class QueueTemplate
     }
 
     /**
-     * @param AbstractAMQPConnection $connection
-     */
-    public function setConnection($connection)
-    {
-        $this->connection = $connection;
-    }
-
-    /**
      * @return QueueStrategy
      */
     public function getStrategy()
     {
         return $this->strategy;
-    }
-
-    /**
-     * @param QueueStrategy $strategy
-     */
-    public function setStrategy($strategy)
-    {
-        $this->strategy = $strategy;
     }
 
     /**

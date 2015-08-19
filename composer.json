@@ -13,11 +13,14 @@
     "php": ">=5.4.0",
     "videlalvaro/php-amqplib": "^2.5",
     "symfony/event-dispatcher": "^2.7",
-    "monolog/monolog": "^1.16"
+    "monolog/monolog": "^1.16",
+    "phpunit/phpunit": "^4.8",
+    "symfony/console": "^2.7"
   },
   "autoload": {
     "psr-4": {
-      "Boot\\": "src/Leadtech/Boot/"
+      "Boot\\": "src/Leadtech/Boot/",
+      "Boot\\RabbitMQ\\Tests\\": "tests/RabbitMQ/Tests/"
     }
   }
 }

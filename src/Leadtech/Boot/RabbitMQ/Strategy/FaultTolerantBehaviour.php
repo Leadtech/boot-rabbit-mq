@@ -69,6 +69,6 @@ class FaultTolerantBehaviour extends QueueStrategy
      */
     public function doAckManually()
     {
-        return self::ACKNOWLEDGE_MANUALLY;
+        return static::ACKNOWLEDGE_MANUALLY;
     }
 }
