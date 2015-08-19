@@ -7,5 +7,4 @@ interface BatchProducerInterface extends ProducerInterface
      * @return bool
      */
     public function commit();
-
 }

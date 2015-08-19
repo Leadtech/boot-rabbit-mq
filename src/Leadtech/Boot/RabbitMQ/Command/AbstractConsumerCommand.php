@@ -49,12 +49,12 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
     final protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Show verbose info
-        if($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE && !defined('AMQP_DEBUG')) {
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE && !defined('AMQP_DEBUG')) {
             define('AMQP_DEBUG', true);
         }
 
         // Connect to server
-        if($this->connect()) {
+        if ($this->connect()) {
 
             // Create channel
             $queueTemplate = $this->consumer->getQueueTemplate();
@@ -77,7 +77,6 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
 
                 // Execute post process
                 $this->postProcess();
-
             }
 
             // Close channel
@@ -85,7 +84,6 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
 
             // Close connection
             $queueTemplate->getConnection()->close();
-
         }
 
         return $this->resultState;
@@ -138,5 +136,4 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
     {
         // By default nothing happens, this method is just here to extended the functionality if needed.
     }
-
 }

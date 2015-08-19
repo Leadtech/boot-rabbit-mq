@@ -50,7 +50,7 @@ abstract class AbstractProducer implements ProducerInterface
      */
     public function getLogger()
     {
-        if(!$this->logger instanceof LoggerInterface) {
+        if (!$this->logger instanceof LoggerInterface) {
             $logger = new Logger(__CLASS__);
             $logger->pushHandler(new NullHandler);
         }
@@ -89,6 +89,4 @@ abstract class AbstractProducer implements ProducerInterface
         // Create channel or reuse the existing one...
         return $this->queueTemplate->createChannel();
     }
-
-
 }

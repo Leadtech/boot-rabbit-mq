@@ -53,7 +53,7 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
     final protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Show verbose info
-        if($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE && !defined('AMQP_DEBUG')) {
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE && !defined('AMQP_DEBUG')) {
             define('AMQP_DEBUG', true);
         }
 
@@ -72,7 +72,6 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
             // Close connection
             $queueTemplate->getConnection()->close();
-
         }
 
         return $this->resultState;
@@ -99,5 +98,4 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
         return true;
     }
-
 }

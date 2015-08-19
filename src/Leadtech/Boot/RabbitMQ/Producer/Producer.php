@@ -19,15 +19,13 @@ class Producer extends AbstractProducer
 
             // Do publish message
             $this->doPublish($data);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             // Handle exception logging
             $this->handleException($e);
 
             throw new PublishMessageException($this, $data, $e);
         }
-
     }
 
     /**
@@ -44,5 +42,4 @@ class Producer extends AbstractProducer
             null
         );
     }
-
 }

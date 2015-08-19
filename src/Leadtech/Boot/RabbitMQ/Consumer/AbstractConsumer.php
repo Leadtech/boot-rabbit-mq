@@ -67,8 +67,7 @@ abstract class AbstractConsumer implements ConsumerInterface
             // Delegate message to handle method.
             // If the handle method returns false or throws an exception than
             $result = $this->handle($message);
-
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             // Failed with errors
             $result = false;
         }
@@ -111,11 +110,10 @@ abstract class AbstractConsumer implements ConsumerInterface
     protected function success(AMQPMessage $message)
     {
         // Check if the current strategy requires manual acknowledgement
-        if($this->queueTemplate->getStrategy()->doAckManually()) {
+        if ($this->queueTemplate->getStrategy()->doAckManually()) {
 
             // Send ack
             $this->ack($message);
-
         }
 
         // Dispatch success event
@@ -129,11 +127,10 @@ abstract class AbstractConsumer implements ConsumerInterface
     protected function failure(AMQPMessage $message, $multiple = false)
     {
         // Check if the current strategy requires manual acknowledgement
-        if($this->queueTemplate->getStrategy()->doAckManually()) {
+        if ($this->queueTemplate->getStrategy()->doAckManually()) {
 
             // Reject message
             $this->nack($message);
-
         }
 
         // Dispatch error event
@@ -226,6 +223,4 @@ abstract class AbstractConsumer implements ConsumerInterface
     {
         $this->noWaiting = $noWaiting;
     }
-
-
 }

@@ -41,5 +41,4 @@ class PublishMessageException extends \RuntimeException
     {
         return $this->data;
     }
-
 }

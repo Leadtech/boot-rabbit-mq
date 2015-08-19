@@ -22,8 +22,7 @@ class BatchProducer extends AbstractProducer implements BatchProducerInterface
                 false,
                 null
             );
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             // Handle exception logging
             $this->handleException($e);
@@ -39,5 +38,4 @@ class BatchProducer extends AbstractProducer implements BatchProducerInterface
     {
         $this->getChannel()->publish_batch();
     }
-
 }

@@ -21,5 +21,4 @@ interface ConsumerInterface
      * @return QueueTemplate
      */
     public function getQueueTemplate();
-
 }

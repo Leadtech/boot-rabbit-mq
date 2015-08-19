@@ -20,5 +20,4 @@ class JsonSerializer implements SerializerInterface
     {
         return json_decode($data, true);
     }
-
 }

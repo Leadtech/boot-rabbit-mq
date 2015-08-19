@@ -7,5 +7,4 @@ namespace Boot\RabbitMQ\Consumer\Event;
  */
 class ReceiveEvent extends AbstractConsumerEvent
 {
-
 }

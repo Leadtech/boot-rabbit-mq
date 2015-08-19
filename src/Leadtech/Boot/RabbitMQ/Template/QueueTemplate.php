@@ -67,7 +67,7 @@ class QueueTemplate
     public function dispatchEvent($eventName, Event $event)
     {
         // Dispatch event if the event dispatcher is set
-        if($this->eventDispatcher instanceof EventDispatcher) {
+        if ($this->eventDispatcher instanceof EventDispatcher) {
             $this->eventDispatcher->dispatch($eventName, $event);
 
             return true;
@@ -82,7 +82,7 @@ class QueueTemplate
      */
     public function createChannel()
     {
-        if($this->channel === null) {
+        if ($this->channel === null) {
             $this->channel = $this->getConnection()->channel(
                 $this->getChannelId() ?: $this->getQueueName()
             );
@@ -144,7 +144,7 @@ class QueueTemplate
      */
     public function getSerializer()
     {
-        if(!$this->serializer instanceof SerializerInterface) {
+        if (!$this->serializer instanceof SerializerInterface) {
             $this->serializer = new JsonSerializer;
         }
 
@@ -239,5 +239,4 @@ class QueueTemplate
     {
         $this->exclusive = $exclusive;
     }
-
 }
