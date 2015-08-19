@@ -38,7 +38,7 @@ class Producer extends AbstractProducer
         $this->getChannel()->basic_publish(
             $this->createMessage($data),
             $this->queueTemplate->getExchangeName(),
-            $this->queueTemplate->getRoutingKey(),
+            $this->queueTemplate->getQueueName(),
             false,
             false,
             null

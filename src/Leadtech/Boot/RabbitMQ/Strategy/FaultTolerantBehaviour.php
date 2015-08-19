@@ -59,7 +59,6 @@ class FaultTolerantBehaviour extends QueueStrategy
         return new AMQPMessage(
             $queueTemplate->getSerializer()->serialize($data),
             [
-                'timestamp' => time(),                                 // add create time
                 'delivery_mode' => RabbitMQ::DELIVERY_MODE_PERSISTENT  // make message persistent, so it is not lost if server crashes or quits, channel must be durable
             ]
         );

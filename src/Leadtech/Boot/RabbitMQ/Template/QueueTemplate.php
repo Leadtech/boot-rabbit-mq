@@ -40,9 +40,6 @@ class QueueTemplate
     /** @var string  */
     protected $exchangeName = '';
 
-    /** @var string  */
-    protected $routingKey = '';
-
     /** @var bool  */
     protected $passive = false;
 
@@ -209,22 +206,6 @@ class QueueTemplate
     public function setExchangeName($exchangeName)
     {
         $this->exchangeName = $exchangeName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRoutingKey()
-    {
-        return $this->routingKey;
-    }
-
-    /**
-     * @param string $routingKey
-     */
-    public function setRoutingKey($routingKey)
-    {
-        $this->routingKey = $routingKey;
     }
 
     /**

@@ -37,16 +37,24 @@ class ConsoleProducerCommand extends AbstractProducerCommand
      */
     protected function produce(InputInterface $input, OutputInterface $output)
     {
+        // Get message
         if($message = $input->getArgument('message')) {
+
+            // Repeat the message (useful for debugging)
             $repeat = (int) $input->getOption('repeat') ?: 1;
-            for($i=0;$i==$repeat;$i++) {
-                $isBase64 = $input->hasOption('base64');
-                if($isBase64) {
+            for($i=0;$i<$repeat;$i++) {
+
+                // Decode base64 encoded argument
+                if($isBase64 = $input->getOption('base64')) {
                     if($decoded = base64_decode($message)) {
                         $message = $decoded;
                     }
                 }
-                $this->producer->publish(['content' => $message]);
+
+                // Publish message
+                $this->producer->publish([
+                    'message' => $message
+                ]);
             }
         }
     }

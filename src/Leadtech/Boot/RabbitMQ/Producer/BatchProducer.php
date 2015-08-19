@@ -17,7 +17,7 @@ class BatchProducer extends AbstractProducer implements BatchProducerInterface
             $this->getChannel()->batch_basic_publish(
                 $this->createMessage($data),
                 $this->queueTemplate->getExchangeName(),
-                $this->queueTemplate->getRoutingKey(),
+                $this->queueTemplate->getQueueName(),
                 false,
                 false,
                 null
