@@ -53,7 +53,8 @@ class ConsoleProducerCommand extends AbstractProducerCommand
 
                 // Publish message
                 $this->producer->publish([
-                    'message' => $message
+                    'message' => $message,
+                    'seq_id' => $i
                 ]);
             }
         }

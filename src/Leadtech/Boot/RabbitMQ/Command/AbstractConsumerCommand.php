@@ -19,14 +19,8 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
     /** @var  ConsumerInterface   */
     protected $consumer;
 
-    /** @var int    Time limit in seconds    */
-    protected $timeLimit = 0;
-
     /** @var  int   Interval in seconds */
     protected $interval = 5;
-
-    /** @var int  */
-    private $startTime = 0;
 
     /** @var int  */
     protected $resultState = self::SUCCESS_EXIT_CODE;
@@ -67,25 +61,18 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
             // Prepare process
             $this->prepareProcess();
 
-            // Process messages (this loop never ends unless explicitly configured otherwise)
-            // IMPORTANT: Note that for each incoming message the ConsumerInterface::handle() method is executed in the background.
-            //while (!$this->expired()) {
-
-            // Execute pre process
-            $this->preProcess();
-
             // Iterate callbacks.
             while(count($channel->callbacks)) {
+
+                // Execute pre process
+                $this->preProcess();
 
                 // Wait for message
                 $channel->wait();
 
+                // Execute post process
+                $this->postProcess();
             }
-
-            // Execute post process
-            $this->postProcess();
-
-            //}
 
             // Close channel
             $channel->close();
@@ -94,8 +81,6 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
             $queueTemplate->getConnection()->close();
 
         }
-
-
 
         return $this->resultState;
     }
@@ -123,24 +108,6 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
     }
 
     /**
-     * @return bool
-     */
-    protected function expired()
-    {
-        // Check if there is a time limit
-        if($this->timeLimit > 0) {
-            if($this->startTime === 0) {
-                // Set start time
-                $this->startTime = time();
-            } else if(time() < $this->startTime + $this->timeLimit) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Prepare process.
      */
     protected function prepareProcess()
@@ -163,7 +130,7 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
      */
     protected function preProcess()
     {
-        // By default nothing happens, this method is just here to be extended if needed.
+        // By default nothing happens, this method is just here to extended the functionality if needed.
     }
 
 }
