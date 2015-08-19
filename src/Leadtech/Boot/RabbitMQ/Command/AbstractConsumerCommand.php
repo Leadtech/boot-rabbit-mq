@@ -20,19 +20,21 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
     protected $consumer;
 
     /** @var  int   Interval in seconds */
-    protected $interval = 5;
+    protected $interval = 1;
 
     /** @var int  */
     protected $resultState = self::SUCCESS_EXIT_CODE;
 
     /**
-     * @param string            $name
-     * @param ConsumerInterface $consumer
-     * @param LoggerInterface   $logger
+     * @param string            $name            The command name e.g. some:command
+     * @param ConsumerInterface $consumer        Instance of Consumer. The Consumer is configured to receive the incoming messages.
+     * @param LoggerInterface   $logger          Instance of LoggerInterface
+     * @param int               $interval        Interval in seconds. If a message is denied and there is no interval than the server and client may continuously send requests back and forth.
      */
-    public function __construct($name, ConsumerInterface $consumer, LoggerInterface $logger = null)
+    public function __construct($name, ConsumerInterface $consumer, LoggerInterface $logger = null, $interval = 0)
     {
         $this->consumer = $consumer;
+        $this->interval = $interval;
         parent::__construct($name);
     }
 
