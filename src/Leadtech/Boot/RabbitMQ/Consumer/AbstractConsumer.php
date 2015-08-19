@@ -22,6 +22,12 @@ abstract class AbstractConsumer implements ConsumerInterface
     /** @var  QueueTemplate */
     protected $queueTemplate;
 
+    /** @var bool  */
+    protected $noLocal = false;
+
+    /** @var bool  */
+    protected $noWaiting = false;
+
     /** @var LoggerInterface  */
     private $logger = null;
 
@@ -90,10 +96,10 @@ abstract class AbstractConsumer implements ConsumerInterface
         $channel->basic_consume(
             $queueTemplate->getQueueName(),                   #queue
             $this->consumerName,                              #consumer tag - Identifier for the consumer, valid within the current channel. just string
-            false,                                            #no local - TRUE: the server will not send messages to the connection that published them
+            $this->noLocal,                                   #no local - TRUE: the server will not send messages to the connection that published them
             !$queueTemplate->getStrategy()->doAckManually(),  #no ack, false - ack turned on, true - off.  send a proper acknowledgment from the worker, once we're done with a task
-            false,                                            #exclusive - queues may only be accessed by the current connection
-            false,                                            #no wait - TRUE: the server will not respond to the method. The client should not wait for a reply method
+            $this->queueTemplate->isExclusive(),              #exclusive - queues may only be accessed by the current connection
+            $this->noWaiting,                                 #no wait - TRUE: the server will not respond to the method. The client should not wait for a reply method
             $this                                             #callback
         );
     }
@@ -154,9 +160,6 @@ abstract class AbstractConsumer implements ConsumerInterface
     /**
      * Rejects one or several received messages
      *
-     * @todo documentation states that if a consumer failes (crashes I assume) that the message in this setup is rejected and redistributed.
-     * @todo I want to force the channel to continue and requeue the item. This method should work, but I need to check if this works properly.
-     *
      * @param AMQPMessage $message
      * @param bool|false $multiple
      */
@@ -191,5 +194,38 @@ abstract class AbstractConsumer implements ConsumerInterface
     {
         return $this->logger;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isNoLocal()
+    {
+        return $this->noLocal;
+    }
+
+    /**
+     * @param boolean $noLocal
+     */
+    public function setNoLocal($noLocal)
+    {
+        $this->noLocal = $noLocal;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNoWaiting()
+    {
+        return $this->noWaiting;
+    }
+
+    /**
+     * @param boolean $noWaiting
+     */
+    public function setNoWaiting($noWaiting)
+    {
+        $this->noWaiting = $noWaiting;
+    }
+
 
 }

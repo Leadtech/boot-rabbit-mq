@@ -17,6 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleProducerCommand extends AbstractProducerCommand
 {
     /**
+     * This command is mainly for testing purposes. Easily write to a queue by adding an instance of this command to the service container.
+     * By injecting the corresponding queue template the producer will automatically publish the message to the same queue that the consumers are listening to.
+     *
      * Configure the command
      */
     protected function configure()
