@@ -23,9 +23,9 @@ class ConsoleProducerCommand extends AbstractProducerCommand
     {
         $this
             ->setDescription('Produce messages from console.')
-            ->addArgument('message',   InputArgument::REQUIRED, 'The message')
+            ->addArgument('message',       InputArgument::REQUIRED,     'The message')
             ->addOption('--repeat', '-r',  InputOption::VALUE_REQUIRED, 'How many times the message must be published. Useful for testing.')
-            ->addOption('--base64', '-b',  InputOption::VALUE_NONE, 'Whether the given message is base64 encoded.')
+            ->addOption('--base64', '-b',  InputOption::VALUE_REQUIRED, 'Set value to "1" if the message is base64 encoded.')
         ;
     }
 

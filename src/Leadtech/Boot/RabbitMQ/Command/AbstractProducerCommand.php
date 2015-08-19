@@ -85,7 +85,7 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
     public function connect()
     {
         // Declare queue
-        $queueTemplate = $this->consumer->getQueueTemplate();
+        $queueTemplate = $this->producer->getQueueTemplate();
 
         // Connect to server
         $connection = $queueTemplate->getConnection();
@@ -95,6 +95,7 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
         // Declare queue
         $queueTemplate->getStrategy()->declareQueue($queueTemplate);
+        //$queueTemplate->getStrategy()->declareQualityOfService($queueTemplate);
 
         return true;
     }
