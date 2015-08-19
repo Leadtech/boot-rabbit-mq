@@ -6,6 +6,7 @@ use Boot\RabbitMQ\Serializer\SerializerInterface;
 use Boot\RabbitMQ\Strategy\QueueStrategy;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection as AbstractAMQPConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -90,6 +91,46 @@ class QueueTemplate
 
         return $this->channel;
     }
+
+    /**
+     * Calls are delegated to the strategy. The strategy is hidden for simplicity.
+     *
+     * @return void
+     */
+    public function declareQueue()
+    {
+        $this->strategy->declareQueue($this);
+    }
+
+    /**
+     * @return void
+     */
+    public function declareQualityOfService()
+    {
+        // Calls are delegated to the strategy. The strategy is hidden for simplicity.
+        $this->strategy->declareQualityOfService($this);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return AMQPMessage
+     */
+    public function createMessage(array $data)
+    {
+        // Calls are delegated to the strategy. The strategy is hidden for simplicity.
+        return $this->strategy->createMessage($this, $data);
+    }
+
+    /**
+     * @return bool
+     */
+    public function doAckManually()
+    {
+        // Calls are delegated to the strategy. The strategy is hidden for simplicity.
+        return $this->strategy->doAckManually();
+    }
+
 
     /**
      * @return AbstractAMQPConnection

@@ -105,8 +105,8 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
         }
 
         // Declare queue
-        $queueTemplate->getStrategy()->declareQueue($queueTemplate);
-        $queueTemplate->getStrategy()->declareQualityOfService($queueTemplate);
+        $queueTemplate->declareQueue();
+        $queueTemplate->declareQualityOfService();
 
         return true;
     }

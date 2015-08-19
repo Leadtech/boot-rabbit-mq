@@ -34,18 +34,6 @@ abstract class AbstractProducer implements ProducerInterface
     }
 
     /**
-     * Create message
-     *
-     * @param array $data
-     * @return AMQPMessage
-     */
-    protected function createMessage(array $data)
-    {
-        // Delegate to queue strategy
-        return $this->queueTemplate->getStrategy()->createMessage($this->queueTemplate, $data);
-    }
-
-    /**
      * @return LoggerInterface
      */
     public function getLogger()

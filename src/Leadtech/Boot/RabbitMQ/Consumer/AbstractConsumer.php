@@ -96,7 +96,7 @@ abstract class AbstractConsumer implements ConsumerInterface
             $queueTemplate->getQueueName(),                   #queue
             $this->consumerName,                              #consumer tag - Identifier for the consumer, valid within the current channel. just string
             $this->noLocal,                                   #no local - TRUE: the server will not send messages to the connection that published them
-            !$queueTemplate->getStrategy()->doAckManually(),  #no ack, false - ack turned on, true - off.  send a proper acknowledgment from the worker, once we're done with a task
+            !$queueTemplate->doAckManually(),  #no ack, false - ack turned on, true - off.  send a proper acknowledgment from the worker, once we're done with a task
             $this->queueTemplate->isExclusive(),              #exclusive - queues may only be accessed by the current connection
             $this->noWaiting,                                 #no wait - TRUE: the server will not respond to the method. The client should not wait for a reply method
             $this                                             #callback
@@ -110,7 +110,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     protected function success(AMQPMessage $message)
     {
         // Check if the current strategy requires manual acknowledgement
-        if ($this->queueTemplate->getStrategy()->doAckManually()) {
+        if ($this->queueTemplate->doAckManually()) {
 
             // Send ack
             $this->ack($message);
@@ -127,7 +127,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     protected function failure(AMQPMessage $message, $multiple = false)
     {
         // Check if the current strategy requires manual acknowledgement
-        if ($this->queueTemplate->getStrategy()->doAckManually()) {
+        if ($this->queueTemplate->doAckManually()) {
 
             // Reject message
             $this->nack($message);

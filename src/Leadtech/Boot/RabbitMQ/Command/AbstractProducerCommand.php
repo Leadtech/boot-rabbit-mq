@@ -93,8 +93,7 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
         }
 
         // Declare queue
-        $queueTemplate->getStrategy()->declareQueue($queueTemplate);
-        //$queueTemplate->getStrategy()->declareQualityOfService($queueTemplate);
+        $queueTemplate->declareQueue();
 
         return true;
     }

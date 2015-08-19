@@ -15,7 +15,7 @@ class BatchProducer extends AbstractProducer implements BatchProducerInterface
 
             // Batch publish. The message is not released until the publishSubmit method is executed!
             $this->getChannel()->batch_basic_publish(
-                $this->createMessage($data),
+                $this->queueTemplate->createMessage($data),
                 $this->queueTemplate->getExchangeName(),
                 $this->queueTemplate->getQueueName(),
                 false,

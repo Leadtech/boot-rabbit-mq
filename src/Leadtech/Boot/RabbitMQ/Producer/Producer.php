@@ -19,6 +19,7 @@ class Producer extends AbstractProducer
 
             // Do publish message
             $this->doPublish($data);
+
         } catch (\Exception $e) {
 
             // Handle exception logging
@@ -33,8 +34,9 @@ class Producer extends AbstractProducer
      */
     protected function doPublish(array $data)
     {
+        // Publish message
         $this->getChannel()->basic_publish(
-            $this->createMessage($data),
+            $this->queueTemplate->createMessage($data),
             $this->queueTemplate->getExchangeName(),
             $this->queueTemplate->getQueueName(),
             false,
