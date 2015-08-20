@@ -197,6 +197,15 @@ abstract class AbstractConsumer implements ConsumerInterface
 
     /**
      * @codeCoverageIgnore
+     * @param LoggerInterface $logger
+     */
+    public function setLogger($logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * @codeCoverageIgnore
      * @return boolean
      */
     public function isNoLocal()
