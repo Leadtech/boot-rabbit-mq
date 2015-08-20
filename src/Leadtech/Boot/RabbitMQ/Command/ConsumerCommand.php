@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class AbstractWorkerCommand
  * @package Search\QueueConsumer
  */
-abstract class AbstractConsumerCommand extends AbstractAMQPCommand
+class ConsumerCommand extends AbstractAMQPCommand
 {
     const SUCCESS_EXIT_CODE = 0;
     const FAILED_EXIT_CODE = 1;
@@ -30,9 +30,10 @@ abstract class AbstractConsumerCommand extends AbstractAMQPCommand
      * @param string            $name            The command name e.g. some:command
      * @param ConsumerInterface $consumer        Instance of Consumer. The Consumer is configured to receive the incoming messages.
      * @param LoggerInterface   $logger          Instance of LoggerInterface
+     * @param string            $description     Command description. This class is reusable for different consumers. Additional information is useful.
      * @param int               $interval        Interval in seconds. If a message is denied and there is no interval than the server and client may continuously send requests back and forth.
      */
-    public function __construct($name, ConsumerInterface $consumer, LoggerInterface $logger = null, $interval = 0)
+    public function __construct($name, ConsumerInterface $consumer, LoggerInterface $logger = null, $description = '', $interval = 0)
     {
         $this->consumer = $consumer;
         $this->interval = $interval;

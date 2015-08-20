@@ -7,7 +7,7 @@ use Boot\RabbitMQ\Strategy\FaultTolerantBehaviour;
 use Boot\RabbitMQ\Template\QueueTemplate;
 use Boot\RabbitMQ\Tests\Assets\CleanFailConsumer;
 use Boot\RabbitMQ\Tests\Assets\Consumer;
-use Boot\RabbitMQ\Tests\Assets\ConsumerCommand;
+use Boot\RabbitMQ\Tests\Assets\TestableConsumerCommand;
 use Boot\RabbitMQ\Tests\Assets\FailWithExceptionConsumer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -44,7 +44,7 @@ class BasicBehaviourConsumerTest extends AbstractRabbitMQTest
         $application = new Application('prod');
 
         // Add command
-        $command = new ConsumerCommand(
+        $command = new TestableConsumerCommand(
             'fake:consumer',
             $this->getMockForAbstractClass('Boot\RabbitMQ\Consumer\AbstractConsumer', [$this->queueTemplate], 'MockConsumer'),
             $this->createLogger()

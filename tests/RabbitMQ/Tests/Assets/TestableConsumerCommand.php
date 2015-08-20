@@ -1,10 +1,10 @@
 <?php
 namespace Boot\RabbitMQ\Tests\Assets;
 
-use Boot\RabbitMQ\Command\AbstractConsumerCommand;
+use Boot\RabbitMQ\Command\ConsumerCommand;
 use PhpAmqpLib\Channel\AMQPChannel;
 
-class ConsumerCommand extends AbstractConsumerCommand
+class TestableConsumerCommand extends ConsumerCommand
 {
     protected $invokeCountCanContinueMethod = 0;
 
