@@ -16,4 +16,11 @@ interface ProducerInterface
      * @return QueueTemplate
      */
     public function getQueueTemplate();
+
+    /**
+     * Connect the producer to the queue.
+     *
+     * @return void
+     */
+    public function connect();
 }

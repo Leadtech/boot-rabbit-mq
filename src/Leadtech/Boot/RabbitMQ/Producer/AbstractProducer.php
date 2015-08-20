@@ -34,6 +34,27 @@ abstract class AbstractProducer implements ProducerInterface
     }
 
     /**
+     * Connect the producer to the queue.
+     *
+     * @return void
+     */
+    public function connect()
+    {
+        // Get queue template
+        $queueTemplate = $this->getQueueTemplate();
+
+        // Connect to server
+        $connection = $queueTemplate->getConnection();
+        if (!$connection->isConnected()) {
+            $connection->reconnect();
+        }
+
+        // Declare queue
+        $queueTemplate->declareQueue();
+    }
+
+    /**
+     * @codeCoverageIgnore
      * @return LoggerInterface
      */
     public function getLogger()

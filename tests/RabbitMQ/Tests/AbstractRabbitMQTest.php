@@ -40,7 +40,7 @@ abstract class AbstractRabbitMQTest extends PHPUnit_Framework_TestCase
     protected $publishBatchInvocations;
 
     /** @var  PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount */
-    protected $batchServicePublishInvocations;
+    protected $batchBasicPublishInvocations;
 
     /** @var  PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount */
     protected $waitInvocations;
@@ -118,7 +118,7 @@ abstract class AbstractRabbitMQTest extends PHPUnit_Framework_TestCase
         ;
 
         $mock
-            ->expects($this->batchServicePublishInvocations = $this->any())
+            ->expects($this->batchBasicPublishInvocations = $this->any())
             ->method('batch_basic_publish')
         ;
 

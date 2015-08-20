@@ -169,6 +169,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return string
      */
     public function getConsumerName()
@@ -177,6 +178,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return QueueTemplate
      */
     public function getQueueTemplate()
@@ -185,6 +187,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return LoggerInterface
      */
     public function getLogger()
@@ -193,6 +196,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return boolean
      */
     public function isNoLocal()
@@ -201,6 +205,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @param boolean $noLocal
      */
     public function setNoLocal($noLocal)
@@ -209,6 +214,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return boolean
      */
     public function isNoWaiting()
@@ -217,6 +223,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @param boolean $noWaiting
      */
     public function setNoWaiting($noWaiting)

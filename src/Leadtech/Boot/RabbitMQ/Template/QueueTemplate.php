@@ -133,6 +133,7 @@ class QueueTemplate
 
 
     /**
+     * @codeCoverageIgnore
      * @return AbstractAMQPConnection
      */
     public function getConnection()
@@ -141,6 +142,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @return QueueStrategy
      */
     public function getStrategy()
@@ -149,6 +151,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @return EventDispatcher
      */
     public function getEventDispatcher()
@@ -157,6 +160,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param EventDispatcher $eventDispatcher
      */
     public function setEventDispatcher($eventDispatcher)
@@ -165,6 +169,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @return SerializerInterface
      */
     public function getSerializer()
@@ -177,6 +182,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param SerializerInterface $serializer
      */
     public function setSerializer($serializer)
@@ -185,6 +191,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @return string
      */
     public function getQueueName()
@@ -193,6 +200,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param string $queueName
      */
     public function setQueueName($queueName)
@@ -209,6 +217,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param null|string $channelId
      */
     public function setChannelId($channelId)
@@ -218,6 +227,7 @@ class QueueTemplate
 
 
     /**
+     * @codeCoverageIgnore
      * @return string
      */
     public function getExchangeName()
@@ -226,6 +236,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param string $exchangeName
      */
     public function setExchangeName($exchangeName)
@@ -234,6 +245,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @return boolean
      */
     public function isPassive()
@@ -242,6 +254,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param boolean $passive
      */
     public function setPassive($passive)
@@ -250,6 +263,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @return boolean
      */
     public function isExclusive()
@@ -258,6 +272,7 @@ class QueueTemplate
     }
 
     /**
+     * @codeCoverageIgnore
      * @param boolean $exclusive
      */
     public function setExclusive($exclusive)
