@@ -27,6 +27,8 @@ class Producer extends AbstractProducer
 
             throw new PublishMessageException($this, $data, $e);
         }
+
+        return true;
     }
 
     /**

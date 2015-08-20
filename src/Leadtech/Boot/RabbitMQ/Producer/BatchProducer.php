@@ -22,6 +22,7 @@ class BatchProducer extends AbstractProducer implements BatchProducerInterface
                 false,
                 null
             );
+
         } catch (\Exception $e) {
 
             // Handle exception logging
@@ -29,6 +30,8 @@ class BatchProducer extends AbstractProducer implements BatchProducerInterface
 
             throw new PublishMessageException($this, $data, $e);
         }
+
+        return true;
     }
 
     /**
