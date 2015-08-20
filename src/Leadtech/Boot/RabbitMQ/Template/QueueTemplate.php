@@ -83,13 +83,28 @@ class QueueTemplate
      */
     public function createChannel()
     {
-        if ($this->channel === null) {
-            $this->channel = $this->getConnection()->channel(
-                $this->getChannelId() ?: $this->getQueueName()
-            );
-        }
+        try {
 
-        return $this->channel;
+            // Create channel
+            if ($this->channel === null) {
+                $this->channel = $this->getConnection()->channel(
+                    $this->getChannelId()
+                );
+            }
+
+            return $this->channel;
+
+        } catch(\Exception $e) {
+
+            // The exceptions thrown by the library are cryptic at best. You may very well get seemingly unrelated a protocol error etc.
+            // Throw a more descriptive exception.
+            throw new \InvalidArgumentException(
+                "Failed to create the AMQP channel. This may be related to a misconfiguration of the connection or channel.",
+                0,
+                $e
+            );
+
+        }
     }
 
     /**
