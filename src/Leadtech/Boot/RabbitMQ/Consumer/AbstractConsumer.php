@@ -6,6 +6,8 @@ use Boot\RabbitMQ\Consumer\Event\ConsumerSuccessEvent;
 use Boot\RabbitMQ\Consumer\Event\ReceiveEvent;
 use Boot\RabbitMQ\RabbitMQ;
 use Boot\RabbitMQ\Template\QueueTemplate;
+use Monolog\Handler\NullHandler;
+use Monolog\Logger;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
@@ -192,9 +194,13 @@ abstract class AbstractConsumer implements ConsumerInterface
      */
     public function getLogger()
     {
+        if(!$this->logger instanceof LoggerInterface) {
+            $this->logger = new Logger(__CLASS__);
+            $this->logger->pushHandler(new NullHandler);
+        }
+
         return $this->logger;
     }
-
     /**
      * @codeCoverageIgnore
      * @param LoggerInterface $logger
