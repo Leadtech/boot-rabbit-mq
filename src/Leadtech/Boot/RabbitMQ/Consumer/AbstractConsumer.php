@@ -69,6 +69,7 @@ abstract class AbstractConsumer implements ConsumerInterface
             // Delegate message to handle method.
             // If the handle method returns false or throws an exception than
             $result = $this->handle($message);
+
         } catch (\Exception $e) {
             // Failed with errors
             $result = false;
