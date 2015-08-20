@@ -35,8 +35,13 @@ class ConsumerCommand extends AbstractAMQPCommand
      */
     public function __construct($name, ConsumerInterface $consumer, LoggerInterface $logger = null, $description = '', $interval = 0)
     {
+        // Set consumer and interval
         $this->consumer = $consumer;
-        $this->interval = $interval;
+        $this->interval = (int) $interval;
+
+        // Set description
+        $this->setDescription($description);
+
         parent::__construct($name);
     }
 
