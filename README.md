@@ -160,7 +160,7 @@ $consumer = new SomeMessageConsumer($queueTemplate, 'some_optional_consumer_name
 
 *Although this works it is better to use dependency injection to configure the components. If the consumer(s) are implemented as a standalone application I
 recommend to checkout the PHPBoot repository which implements a lightweight implementation of the Symfony2 service container and console component.
-I will add ready to use example of this library there as well. (by the time you read this it might be already there)*
+I will add ready to use example of this library there as well. (by the time you read this it might already be there)*
 
 
 ### Handling incoming messages
