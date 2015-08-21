@@ -2,11 +2,9 @@
 
 This library provides an easy to way to get up and running with RabbitMQ very quickly.
 To use rabbitMQ you'll need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s). 
-The same template is the backbone if both classes. The classes are highly decoupled and it should be easy to extend any functionality that this library offers.
-Encryption is provided out of the box, and there are some commands you can use to quickly develop a command line application that is based on the symfony console.
-For a lightweight implementation very suitable for the development of console application check out the PHPBoot repository. 
-Boot provides a minimalistic implementation of the symfony console and service container. You will find a ready to use console application in the examples folder. 
-I will consider to add another example that implements rabbitMQ as well.
+A single queue template is the backbone of both classes. 
+Encryption is provided out of the box, and there are some commands you can use to quickly develop a command line application that is based on the symfony console. The components are highly decoupled and it should be easy to extend existing functionality that this library has to offer.
+For a minimalistic implementation of the symfony2 console and service container I recommend to check out the PHPBoot repository. Boot provides is lightweight and very flexible. You will find a ready to use console application in the examples folder. I will consider to add another example that implements this library as well.
 
  
 ### Dependencies
