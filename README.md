@@ -28,19 +28,18 @@ TODO
 ## QueueTemplate
 
 ### Responsibility
-The responsibility of the QueueTemplate is to provide a single setup that is specific to a single line of communication between producer(s) and consumer(s).
-Both the consumer and the producer depend om the same services and options that the QueueTemplate provides. (Some calls to the QueueTemplate are actualy
-delegated to the queue strategy.)
+The responsibility of the QueueTemplate is to provide a single setup that is specific to a single line of communication between producers and consumers.
+Both the consumer and the producer depend om the same services and options that the QueueTemplate provides. (Some calls to the QueueTemplate are delegated to the queue strategy.)
 
 The QueueTemplate contains:
-- The RabbitMQ connection object  (same configurations must be used for both the producer and the consumer)
-- The Serializer
+- The connection object  (same configurations must be used for both the producer and the consumer)
+- A message Serializer
 - RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etc
-- Queue strategy
+- The Queue strategy
 - The event dispatcher
 
 
-#### What is the queue strategy?
+#### What is a queue strategy?
 
 RabbitMQ is a powerful queuing server and there are various ways to use it. This library provides two configurations out of the box providing either a fault tolerant solution
 or a basic but faster setup.
