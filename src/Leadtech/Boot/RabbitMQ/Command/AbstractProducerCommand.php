@@ -64,8 +64,17 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
             $queueTemplate = $this->producer->getQueueTemplate();
             $channel = $queueTemplate->createChannel();
 
-            // Produce message(s)
-            $this->produce($input, $output);
+            try {
+
+                // Produce message(s)
+                $this->produce($input, $output);
+
+            } catch(\Exception $e) {
+
+                // Handle exception
+                $this->handleException($e, $output);
+
+            }
 
             // Close channel
             $channel->close();
@@ -80,6 +89,8 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
     /**
      * Connect to RabbitMQ
+     *
+     * @return bool
      */
     public function connect()
     {
@@ -87,5 +98,27 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
         $this->producer->connect();
 
         return true;
+    }
+
+    /**
+     * @param \Exception $e
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    protected function handleException(\Exception $e, OutputInterface $output)
+    {
+        // Set result state
+        $this->resultState = self::FAILED_EXIT_CODE;
+
+        // Render error message
+        $message = strtr('Error occurred: {message} on line {line} in file {file}.', [
+            '{message}' => $e->getMessage(),
+            '{line}'    => $e->getLine(),
+            '{file}'    => $e->getFile()
+        ]);
+
+        // Output error
+        $output->writeln($message);
     }
 }
