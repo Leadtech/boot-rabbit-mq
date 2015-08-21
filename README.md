@@ -32,10 +32,10 @@ The responsibility of the QueueTemplate is to provide a single setup that is spe
 Both the consumer and the producer depend om the same services and options that the QueueTemplate provides. (Some calls to the QueueTemplate are delegated to the queue strategy.)
 
 The QueueTemplate contains:
-- The connection object  (same configurations must be used for both the producer and the consumer)
-- A message Serializer
+- The connection  (same configuration must be used for both the producer and the consumer)
+- A message serializer
 - RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etc
-- The Queue strategy
+- The queue strategy
 - The event dispatcher
 
 
@@ -55,7 +55,7 @@ If we would want a simple non persisted queue we would simply do:
 $queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\BasicBehaviour);
 ```
 
-Or if we decide to go with a fault tolerant solution instead:
+Or if we decide to go with a fault tolerant solution instead we could do:
 ```
 $queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\FaultTolerantBehaviour);
 ```
@@ -113,7 +113,7 @@ class SomeCustomBehaviour extends QueueStrategy
 }
 ```
 
-Do you have an awesome strategy that might be useful to others? Feel free to share ;-)
+*Do you have an awesome strategy that might be useful to others? Feel free to share ;-)*
 
 
 
