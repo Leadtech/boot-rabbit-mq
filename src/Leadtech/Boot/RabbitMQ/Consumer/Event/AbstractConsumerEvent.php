@@ -26,4 +26,21 @@ abstract class AbstractConsumerEvent extends Event
         $this->consumer = $consumer;
         $this->message = $message;
     }
+
+    /**
+     * @return ConsumerInterface
+     */
+    public function getConsumer()
+    {
+        return $this->consumer;
+    }
+
+    /**
+     * @return AMQPMessage
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
 }

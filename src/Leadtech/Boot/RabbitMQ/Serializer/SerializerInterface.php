@@ -1,6 +1,10 @@
 <?php
 namespace Boot\RabbitMQ\Serializer;
 
+/**
+ * Interface SerializerInterface
+ * @package Boot\RabbitMQ\Serializer
+ */
 interface SerializerInterface
 {
     /**

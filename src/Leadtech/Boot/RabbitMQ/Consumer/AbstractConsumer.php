@@ -62,7 +62,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         $message->body = $this->queueTemplate->getSerializer()->unserialize($message->body);
 
         // Intercept incoming message and dispatch receive event.
-        $this->queueTemplate->dispatchEvent(RabbitMQ::ON_RECEIVE_EVENT, new ReceiveEvent($this, $message));
+        $this->queueTemplate->dispatchEvent(RabbitMQ::ON_RECEIVE, new ReceiveEvent($this, $message));
 
         try {
 
@@ -88,7 +88,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         $queueTemplate = $this->queueTemplate;
 
         // Create or reuse existing channel
-        $channel = $queueTemplate->createChannel();
+        $channel = $this->channel();
 
         /**
          * indicate interest in consuming messages from a particular queue. When they do
@@ -106,6 +106,17 @@ abstract class AbstractConsumer implements ConsumerInterface
         );
     }
 
+    /**
+     * Create or reuse AMQP channel.
+     *
+     * @return AMQPChannel
+     */
+    public function channel()
+    {
+        // Delegate call to queue template. Method added for the sake of simplicity.
+        // We don't want to get the queue template from the consumer. This would create an extra dependency that we do not need.
+        return $this->queueTemplate->createChannel();
+    }
 
     /**
      * @param AMQPMessage $message

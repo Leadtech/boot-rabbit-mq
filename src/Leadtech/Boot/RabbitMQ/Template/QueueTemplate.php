@@ -68,7 +68,7 @@ class QueueTemplate
     public function dispatchEvent($eventName, Event $event)
     {
         // Dispatch event if the event dispatcher is set
-        if ($this->eventDispatcher instanceof EventDispatcher) {
+        if ($this->eventDispatcher instanceof EventDispatcherInterface) {
             $this->eventDispatcher->dispatch($eventName, $event);
 
             return true;
@@ -87,9 +87,13 @@ class QueueTemplate
 
             // Create channel
             if ($this->channel === null) {
-                $this->channel = $this->getConnection()->channel(
-                    $this->getChannelId()
-                );
+
+                // Create or reuse the AMQP channel. If the channel id is null use the queue name instead.
+                // If we would pass null as an argument we would get a new channel object on each call.
+                // This seems to work as well, but I still think it is better to reuse the existing object.
+                $channelId = ($this->getChannelId() === null) ? $this->getQueueName() : $this->getChannelId();
+                $this->channel = $this->getConnection()->channel($channelId);
+
             }
 
             return $this->channel;
