@@ -35,9 +35,6 @@ class QueueTemplate
     /** @var  SerializerInterface */
     protected $serializer;
 
-    /** @var string|null */
-    protected $channelId = null;
-
     /** @var string  */
     protected $exchangeName = '';
 
@@ -88,11 +85,13 @@ class QueueTemplate
             // Create channel
             if ($this->channel === null) {
 
-                // Create or reuse the AMQP channel. If the channel id is null use the queue name instead.
-                // If we would pass null as an argument we would get a new channel object on each call.
-                // This seems to work as well, but I still think it is better to reuse the existing object.
-                $channelId = ($this->getChannelId() === null) ? $this->getQueueName() : $this->getChannelId();
-                $this->channel = $this->getConnection()->channel($channelId);
+                // Connect if not connected
+                if(!$this->connection->isConnected()) {
+                    $this->connection->reconnect();
+                }
+
+                // Create channel
+                $this->channel = $this->getConnection()->channel();
 
             }
 
@@ -226,24 +225,6 @@ class QueueTemplate
     {
         $this->queueName = $queueName;
     }
-
-    /**
-     * @return null|string
-     */
-    public function getChannelId()
-    {
-        return $this->channelId;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     * @param null|string $channelId
-     */
-    public function setChannelId($channelId)
-    {
-        $this->channelId = $channelId;
-    }
-
 
     /**
      * @codeCoverageIgnore
