@@ -277,8 +277,8 @@ class SomeCustomBehaviour extends QueueStrategy
 ### Responsibility
 
 A consumer is responsible for listening and processing received messages from a particular queue.
-Both the consumer and producer classes are tightly coupled to the QueueTemplate class. The queue template provides a single point of configuration that contains
-all information either on them needs to successfully connect, publish and subscribe to each other using RabbitMQ.
+Both the consumer and producer classes are tightly coupled to the QueueTemplate class.
+The queue template provides a single configuration that applies to both consumers and producers.
 
 ### Implementing your consumer
 
@@ -322,34 +322,34 @@ I will add ready to use example of this library there as well. (by the time you 
 Start listening to incoming messages.
 
 ```
-$consumer->listen();
-```
-
-The listen method will:
-- Create a connection to the server. The consumer will get a configured connection object from queue template.
-- Declare a queue as defined in the queue template and its strategy
-- Declare the quality of service (qos) as defined in the queue template and its strategy
-- Create a channel and subscribe to a particular queue. Internally we must at this point provide a callback that will be executed for each incoming message.
-  Because the AbstractConsumer implements the magic __invoke method we can consumer instances as a callback.
-  When the __invoke method is invoked we will delegate the call to the handle method on the concrete consumer and use the result to send a ack/nack signal to the server.
-
-
-We will not receive messages just yet. To start receiving messages we must execute something like:
-
-```
-/** @var AMQPChannel $channel */
-$channel = $consumer->channel();
-
-// Start receiving
-while (count($channel->callbacks)) {
-    // Wait for messages. Any incoming message is delegated to the consumer object
-    $channel->wait();
+if($consumer->connect()) {
+    $consumer->listen();
 }
 ```
 
+The connect method will:
+- Create a connection to the server. The consumer will get a configured connection object from queue template.
+- Declare a queue as defined in the queue template and its strategy
+- Declare the quality of service (qos) as defined in the queue template and its strategy
 
-The method must either return *true* (success) or *false* (failed).
-This is especially crucial to setups where ack/nack signals must be sent manually.
+The listen method will:
+- Create a channel and subscribe to a particular queue. Internally we provide a callback that will be executed for each received message.
+  Because the AbstractConsumer implements the magic __invoke method we can consumer instances as a valid callback.
+  When the __invoke method is called we will delegate the call to the handle method on the concrete consumer.
+  The handle method must return true or false. This is especially crucial in setups where ack/nack signals are sent manually.
+
+
+
+We will not receive messages just yet. To start receiving messages we must execute:
+
+```
+// Start receiving
+while ($consumer->isBusy()) {
+    // Wait for messages. Any incoming message is delegated to the consumer object
+    $consumer->wait();
+}
+```
+
 
 
 ### Attach to consumer events
@@ -439,6 +439,7 @@ Using a producer to publish a message.
 use Boot\RabbitMQ\Producer\Producer
 /** @var QueueTemplate $queueTemplate*/
 $producer = new Producer($queueTemplate);
+$producer->connect();
 $producer->publish([
     'message'          => 'some example message',
     'some-other-field' => 'some other value',
@@ -451,6 +452,8 @@ Using a batch producer to publish multiple messages at once.
 use Boot\RabbitMQ\Producer\BatchProducer
 /** @var QueueTemplate $queueTemplate*/
 $producer = new BatchProducer($queueTemplate);
+$producer->connect();
+
 // Publish message 1
 $producer->publish([
     'message'          => 'some example message',
