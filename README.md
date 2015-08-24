@@ -184,26 +184,25 @@ the following packages in your composer.json file.
 
 ### Responsibility
 The responsibility of the QueueTemplate is to provide a single setup that is specific to a single line of communication between producers and consumers.
-Both the consumer and the producer depend om the same services and options that the QueueTemplate provides. (Some calls to the QueueTemplate are delegated to the queue strategy.)
+Both the consumer and the producer depend on the same setup provided by the queue template.
 
 The QueueTemplate contains:
 - The connection  (same configuration must be used for both the producer and the consumer)
 - A message serializer
-- RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etc
-- The queue strategy
+- RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etcetera
+- A queue strategy
 - The event dispatcher
 
 
 #### What is a queue strategy?
 
-RabbitMQ is a powerful queuing server and there are various ways to use it. This library provides two configurations out of the box providing either a fault tolerant solution
+RabbitMQ is a powerful queuing server and there are numerous ways to use it. This library provides two configurations out of the box providing either a fault tolerant solution
 or a basic but faster setup.
-Some configurations require a specific setup of both the consumer and producer.
-An example of such a configuration is a durable setup where the messages are persisted on the server. In case of a durable setup for example it is required to send a flag that tells the server to persist the
-incoming message. And when we declare the queue on either the consumer or producer we must also flag the queue durable.
-On top of that we need to make sure that we set the auto_delete = false when the consumer declares the quality of service.
+Configurations may require a specific setup of both the consumer and the producer.
+
 A problem about many features is that it becomes easier to overlook something. The queue strategy provides a single point of configuration so that this logic
-is not scattered over other components. Also, this setup makes it alot easier to change a queues characteristics.
+is not scattered over other components and application. If either one of the them changes slightly it could break the intended functionality. The strategy is
+designed to simplify this process and improve the reliability of the setup possibly over different applications.
 
 If we would want a simple non persisted queue we would simply do:
 ```
