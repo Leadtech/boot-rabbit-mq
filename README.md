@@ -1,26 +1,182 @@
 ## Quickstart 
 
 This library provides an easy to way to get up and running with RabbitMQ very quickly.
-To use rabbitMQ you'll need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s). 
-A single queue template is the backbone of both classes. 
-Encryption is provided out of the box, and there are some commands you can use to quickly develop a command line application that is based on the symfony console. The components are highly decoupled and it should be easy to extend existing functionality that this library has to offer.
-For a minimalistic implementation of the symfony2 console and service container I recommend to check out the PHPBoot repository. Boot provides is lightweight and very flexible. You will find a ready to use console application in the examples folder. I will consider to add another example that implements this library as well.
+To use rabbitMQ you'll first need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s).
+The same template is meant to be reused for both the producer and the consumer.
+Once the template is in place you have to subclass the AbstractConsumer class and implement the handle method.
+Incoming messages from the queue as defined in the template shall be delegated to the consumer.
+To implement a message producer simply instantiate or subclass Boot\RabbitMQ\Producer\Producer or Boot\RabbitMQ\Producer\BatchProducer
+providing the queue template instance in the constructor. Also, there is a command you can use to publish messages from the console.
+Supposing you are using dependency injection simply add the command and inject the Producer instance.
 
- 
 ### Dependencies
 
-The library has dependencies to:
+This library has dependencies to:
 - Symfony2 console component
 - Symfony2 event dispatcher
-- PhpAmqpLib 
+- PhpAmqpLib
+
 
 ### Full example
 
-TODO
+Full example of a fault tolerant queue. The messages are persisted and will sursive a restart. Further more,
+the ACK/NACK signals are not sent automatically but handled explicitly by the client.
+
+#### Create worker.php
+
+```
+<?php
+// Autoload dependencies
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Boot\RabbitMQ\Strategy\FaultTolerantBehaviour;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Boot\RabbitMQ\Connection\AMQPConnection;
+use Boot\RabbitMQ\Consumer\AbstractConsumer;
+use Boot\RabbitMQ\RabbitMQ;
+use Boot\RabbitMQ\Consumer\Event\ConsumerSuccessEvent;
+use Boot\RabbitMQ\Consumer\Event\ReceiveEvent;
+
+class ExampleConsumer extends AbstractConsumer
+{
+    /**
+     * @param \PhpAmqpLib\Message\AMQPMessage $message
+     * @return bool
+     */
+    public function handle(\PhpAmqpLib\Message\AMQPMessage $message)
+    {
+        echo "Received message #{$message->body['sequence_number']}\n";
+
+        // Return true for success, an ACK signal is sent to the server. Alternatively an exception or returning false will result in a NACK signal instead.
+        return true;
+    }
+
+}
+
+// Create event dispatcher (is optional)
+$eventDispatcher = new EventDispatcher();
+
+// Create queue template
+$queueTemplate = new \Boot\RabbitMQ\Template\QueueTemplate(
+    new AMQPConnection('localhost', 5672, 'guest', 'guest'),
+    new FaultTolerantBehaviour,
+    $eventDispatcher
+);
+
+$queueTemplate->setExclusive(false);
+$queueTemplate->setQueueName('example_queue_1');
+
+$eventDispatcher->addListener(RabbitMQ::ON_RECEIVE, function(ReceiveEvent $event){
+    echo "Receiving a new message. Sequence number: {$event->getMessage()->body['sequence_number']}\n";
+});
+
+
+$eventDispatcher->addListener(RabbitMQ::ON_CONSUMER_SUCCESS, function(ConsumerSuccessEvent $event){
+    echo "Successfully processed message. Sequence number: {$event->getMessage()->body['sequence_number']}\n\n";
+});
+
+$consumer = new ExampleConsumer($queueTemplate);
+$consumer->connect();
+$consumer->listen();
+
+while($consumer->isBusy()) {
+    $consumer->wait();
+}
+```
+
+#### Create producer.php
+
+```
+<?php
+// Autoload dependencies
+require_once __DIR__ . '/../vendor/autoload.php';
+use Boot\RabbitMQ\Strategy\FaultTolerantBehaviour;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Boot\RabbitMQ\Connection\AMQPConnection;
+use Boot\RabbitMQ\Producer\Producer;
+
+$eventDispatcher = new EventDispatcher();
+$queueTemplate = new \Boot\RabbitMQ\Template\QueueTemplate(
+    new AMQPConnection('localhost', 5672, 'guest', 'guest'),
+    new FaultTolerantBehaviour
+);
+$queueTemplate->setExclusive(false);
+$queueTemplate->setQueueName('example_queue_1');
+
+
+$producer = new Producer($queueTemplate);
+$producer->connect();
+
+for($i=0;$i<=10;$i++) {
+    $producer->publish([
+        'sequence_number' => time() . '-' . $i
+    ]);
+}
+```
+
+### Real world example
+
+Although this library should work well with symfony2 applications or other frameworks based on symfony components this code was originally written
+to be used with Boot. Boot is a minimalistic framework build upon symfony's DependencyInjection, EventDispatcher and Console components and uses composer for
+package management and auto-loading. Boot is focused on minimalism and flexibility. Boot is very suitable for rapid development of console applications.
+Feel free to check out the PHPBoot repository.  You will find a ready to use console application in the examples folder.
+Boot provides a solution to implement your queues and commands using dependency injection without having to bootstrap the symfony framework
+for each worker.
+
+To bootstrap an application simply execute the following:
+
+```
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Get environment
+$input = new ArgvInput();
+$env = $input->getParameterOption(['--env', '-e'], 'dev');
+
+// Build application
+$rootDir = realpath(__DIR__ . '/..');
+$app = (new \Boot\Builder($rootDir))
+    ->appName('BeslistSearchQueueConsumer')                          # The name of the application
+    ->caching('cache', false)                                        # Enable/disable caching of the service container
+    ->environment($env)                                              # Set environment
+    ->path('resources/config')                                       # Service configuration (order matters)
+    ->path('src/Search/Resources/config')                            # Service configuration (order matters)
+    ->parameter('project_dir', $rootDir)                             # Register parameters to the service container.
+    ->beforeOptimization(new CommandCompilerPass)                    # Automatically register the commands to the console. Console commands must be tagged with a console_command tag.
+    ->build()
+;
+
+/** @var ConsoleApplication $console */
+$console = $app->get('console');
+$console->getDefinition()->addOption(
+    new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The environment name.', 'dev')
+);
+
+$console->run();
+```
+
+
 
 ## Installation
 
-TODO
+After installing RabbitMQ you'll have to setup a project. If you decide to go with boot checkout the examples
+folder. You will find a ready to use console application in there. If you want to start from scratch you will need to include
+the following packages in your composer.json file.
+
+*Boot*
+```
+"require": {
+    "leadtech/boot": "^1.0",
+  }
+```
+
+*BootRabbitMQ*
+```
+"require": {
+    "leadtech/boot-rabbit-mq": "^1.0"
+  }
+```
 
 
 ## QueueTemplate
