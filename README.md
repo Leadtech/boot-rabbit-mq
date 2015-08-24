@@ -204,12 +204,12 @@ A problem about many features is that it becomes easier to overlook something. T
 is not scattered over other components and application. If either one of the them changes slightly it could break the intended functionality. The strategy is
 designed to simplify this process and improve the reliability of the setup possibly over different applications.
 
-If we would want a simple non persisted queue we would simply do:
+Creating a queue in memory which performs better but will not survive a crash:
 ```
 $queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\BasicBehaviour);
 ```
 
-Or if we decide to go with a fault tolerant solution instead we could do:
+Or to create a fault tolerant queue instead we would do:
 ```
 $queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\FaultTolerantBehaviour);
 ```
