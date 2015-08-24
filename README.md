@@ -1,4 +1,4 @@
-## Quickstart 
+# Quickstart
 
 This library provides an easy to way to get up and running with RabbitMQ very quickly.
 To use rabbitMQ you'll first need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s).
@@ -158,20 +158,20 @@ $console->run();
 
 
 
-## Installation
+# Installation
 
 After installing RabbitMQ you'll have to setup a project. If you decide to go with boot checkout the examples
 folder. You will find a ready to use console application in there. If you want to start from scratch you will need to include
 the following packages in your composer.json file.
 
-*Boot*
+*Installing Boot*
 ```
 "require": {
     "leadtech/boot": "^1.0",
   }
 ```
 
-*BootRabbitMQ*
+*Installing Boot RabbitMQ*
 ```
 "require": {
     "leadtech/boot-rabbit-mq": "^1.0"
@@ -179,7 +179,8 @@ the following packages in your composer.json file.
 ```
 
 
-## QueueTemplate
+
+# QueueTemplate
 
 ### Responsibility
 The responsibility of the QueueTemplate is to provide a single setup that is specific to a single line of communication between producers and consumers.
@@ -271,7 +272,7 @@ class SomeCustomBehaviour extends QueueStrategy
 
 
 
-## The consumer
+# The consumer
 
 
 ### Responsibility
@@ -423,7 +424,7 @@ Boot provides a powerful builder that you can use to setup your application.
 Components are designed to be framework agnostic, flexible, and lightweight.
 
 
-## Producer
+# Producer
 
 
 ### Responsibility
@@ -494,7 +495,7 @@ To publish the same message 10 times execute:
 
 
 
-## Serializer
+# Serializer
 
 ### Responsibility
 

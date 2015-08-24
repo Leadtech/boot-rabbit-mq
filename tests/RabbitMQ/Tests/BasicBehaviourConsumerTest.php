@@ -13,7 +13,7 @@ use Boot\RabbitMQ\Tests\Assets\TestableConsumerCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class FaultTolerantBehaviourConsumerTest extends AbstractRabbitMQTest
+class BasicBehaviourConsumerTest extends AbstractRabbitMQTest
 {
     /** @var  QueueTemplate */
     protected $queueTemplate;
