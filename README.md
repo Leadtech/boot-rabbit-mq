@@ -2,11 +2,9 @@
 
 This library provides an easy to way to get up and running with RabbitMQ very quickly.
 To use rabbitMQ you'll need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s). 
-The same template is the backbone if both classes. The classes are highly decoupled and it should be easy to extend any functionality that this library offers.
-Encryption is provided out of the box, and there are some commands you can use to quickly develop a command line application that is based on the symfony console.
-For a lightweight implementation very suitable for the development of console application check out the PHPBoot repository. 
-Boot provides a minimalistic implementation of the symfony console and service container. You will find a ready to use console application in the examples folder. 
-I will consider to add another example that implements rabbitMQ as well.
+A single queue template is the backbone of both classes. 
+Encryption is provided out of the box, and there are some commands you can use to quickly develop a command line application that is based on the symfony console. The components are highly decoupled and it should be easy to extend existing functionality that this library has to offer.
+For a minimalistic implementation of the symfony2 console and service container I recommend to check out the PHPBoot repository. Boot provides is lightweight and very flexible. You will find a ready to use console application in the examples folder. I will consider to add another example that implements this library as well.
 
  
 ### Dependencies
@@ -28,19 +26,18 @@ TODO
 ## QueueTemplate
 
 ### Responsibility
-The responsibility of the QueueTemplate is to provide a single setup that is specific to a single line of communication between producer(s) and consumer(s).
-Both the consumer and the producer depend om the same services and options that the QueueTemplate provides. (Some calls to the QueueTemplate are actualy
-delegated to the queue strategy.)
+The responsibility of the QueueTemplate is to provide a single setup that is specific to a single line of communication between producers and consumers.
+Both the consumer and the producer depend om the same services and options that the QueueTemplate provides. (Some calls to the QueueTemplate are delegated to the queue strategy.)
 
 The QueueTemplate contains:
-- The RabbitMQ connection object  (same configurations must be used for both the producer and the consumer)
-- The Serializer
+- The connection  (same configuration must be used for both the producer and the consumer)
+- A message serializer
 - RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etc
-- Queue strategy
+- The queue strategy
 - The event dispatcher
 
 
-#### What is the queue strategy?
+#### What is a queue strategy?
 
 RabbitMQ is a powerful queuing server and there are various ways to use it. This library provides two configurations out of the box providing either a fault tolerant solution
 or a basic but faster setup.
@@ -56,7 +53,7 @@ If we would want a simple non persisted queue we would simply do:
 $queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\BasicBehaviour);
 ```
 
-Or if we decide to go with a fault tolerant solution instead:
+Or if we decide to go with a fault tolerant solution instead we could do:
 ```
 $queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\FaultTolerantBehaviour);
 ```
@@ -114,7 +111,7 @@ class SomeCustomBehaviour extends QueueStrategy
 }
 ```
 
-Do you have an awesome strategy that might be useful to others? Feel free to share ;-)
+*Do you have an awesome strategy that might be useful to others? Feel free to share ;-)*
 
 
 
@@ -161,7 +158,7 @@ $consumer = new SomeMessageConsumer($queueTemplate, 'some_optional_consumer_name
 
 *Although this works it is better to use dependency injection to configure the components. If the consumer(s) are implemented as a standalone application I
 recommend to checkout the PHPBoot repository which implements a lightweight implementation of the Symfony2 service container and console component.
-I will add ready to use example of this library there as well. (by the time you read this it might be already there)*
+I will add ready to use example of this library there as well. (by the time you read this it might already be there)*
 
 
 ### Handling incoming messages
