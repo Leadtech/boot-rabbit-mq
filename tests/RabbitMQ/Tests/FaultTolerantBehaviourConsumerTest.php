@@ -101,7 +101,7 @@ class BasicBehaviourConsumerTest extends AbstractRabbitMQTest
     {
         $consumer = new Consumer($this->queueTemplate);
         $message = $this->queueTemplate->createMessage(['msg' => 'blaat']);
-        $message->delivery_info = ['channel' => $this->queueTemplate->createChannel(), 'delivery_tag' => 123];
+        $message->delivery_info = ['channel' => $this->queueTemplate->channel(), 'delivery_tag' => 123];
         call_user_func($consumer, $message);
 
         // Assert that the ack signal was sent
@@ -115,7 +115,7 @@ class BasicBehaviourConsumerTest extends AbstractRabbitMQTest
     {
         // Create message
         $message = $this->queueTemplate->createMessage(['msg' => 'blaat']);
-        $message->delivery_info = ['channel' => $this->queueTemplate->createChannel(), 'delivery_tag' => 123];
+        $message->delivery_info = ['channel' => $this->queueTemplate->channel(), 'delivery_tag' => 123];
 
         // Create a failing consumer instance. This instance will return false. A nack signal should be sent.
         $consumer = new CleanFailConsumer($this->queueTemplate);

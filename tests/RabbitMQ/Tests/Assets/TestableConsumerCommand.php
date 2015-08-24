@@ -11,14 +11,13 @@ class TestableConsumerCommand extends ConsumerCommand
     public function wait()
     {
         // Wait one time and than empty the callback collection. (or we would end up with an eternal loop)
-        $this->consumer->getQueueTemplate()->createChannel()->callbacks[] = [];
+        $this->consumer->getQueueTemplate()->channel()->callbacks[] = [];
     }
 
     /**
-     * @param AMQPChannel $channel
      * @return bool
      */
-    protected function canContinue(AMQPChannel $channel)
+    protected function canContinue()
     {
         if(++$this->invokeCountCanContinueMethod > 1) {
             return false;

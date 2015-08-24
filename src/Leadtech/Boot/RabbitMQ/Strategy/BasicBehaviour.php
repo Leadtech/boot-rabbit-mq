@@ -18,7 +18,7 @@ class BasicBehaviour extends QueueStrategy
     public function declareQueue(QueueTemplate $queueTemplate)
     {
         // Create or reuse existing channel
-        $channel = $queueTemplate->createChannel();
+        $channel = $queueTemplate->channel();
 
         // Declare queue
         $channel->queue_declare(
@@ -37,7 +37,7 @@ class BasicBehaviour extends QueueStrategy
     {
         // Create or reuse existing channel. The channel ID should be set, use queue name if the channel has no id.
         // We don't want the channel to be recreated over and over.
-        $channel = $queueTemplate->createChannel();
+        $channel = $queueTemplate->channel();
 
         /*
          * don't dispatch a new message to a worker until it has processed and

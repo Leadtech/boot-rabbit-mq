@@ -96,6 +96,6 @@ abstract class AbstractProducer implements ProducerInterface
     public function getChannel()
     {
         // Create channel or reuse the existing one...
-        return $this->queueTemplate->createChannel();
+        return $this->queueTemplate->channel();
     }
 }

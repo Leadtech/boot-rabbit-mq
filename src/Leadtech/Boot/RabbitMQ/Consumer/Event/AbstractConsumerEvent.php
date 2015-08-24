@@ -28,6 +28,7 @@ abstract class AbstractConsumerEvent extends Event
     }
 
     /**
+     * @codeCoverageIgnore
      * @return ConsumerInterface
      */
     public function getConsumer()
@@ -36,6 +37,7 @@ abstract class AbstractConsumerEvent extends Event
     }
 
     /**
+     * @codeCoverageIgnore
      * @return AMQPMessage
      */
     public function getMessage()

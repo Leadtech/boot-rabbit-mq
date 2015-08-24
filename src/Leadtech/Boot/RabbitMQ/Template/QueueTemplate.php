@@ -81,7 +81,7 @@ class QueueTemplate
     /**
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
-    public function createChannel()
+    public function channel()
     {
         try {
 
@@ -297,5 +297,19 @@ class QueueTemplate
     public function setExclusive($exclusive)
     {
         $this->exclusive = $exclusive;
+    }
+
+    /**
+     * Close channel and connection
+     *
+     * @return void
+     */
+    public function close()
+    {
+        // Close channel
+        $this->channel()->close();
+
+        // Close connection
+        $this->getConnection()->close();
     }
 }

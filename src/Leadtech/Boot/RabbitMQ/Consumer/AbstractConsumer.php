@@ -80,6 +80,26 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
+     * @return bool
+     */
+    public function connect()
+    {
+        // Connect to server
+        $connection = $this->queueTemplate->getConnection();
+        if (!$connection->isConnected()) {
+            $connection->reconnect();
+        }
+
+        // Declare queue
+        $this->queueTemplate->declareQueue();
+        $this->queueTemplate->declareQualityOfService();
+
+        // Always return true for the time being. May be improved later and returning true will ensure we won't have to
+        // change the implementation later on.
+        return true;
+    }
+
+    /**
      * @return void
      */
     public function listen()
@@ -115,7 +135,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     {
         // Delegate call to queue template. Method added for the sake of simplicity.
         // We don't want to get the queue template from the consumer. This would create an extra dependency that we do not need.
-        return $this->queueTemplate->createChannel();
+        return $this->queueTemplate->channel();
     }
 
     /**
@@ -256,5 +276,21 @@ abstract class AbstractConsumer implements ConsumerInterface
     public function setNoWaiting($noWaiting)
     {
         $this->noWaiting = $noWaiting;
+    }
+
+    /**
+     * @return void
+     */
+    public function wait()
+    {
+        $this->queueTemplate->channel()->wait();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBusy()
+    {
+        return count($this->queueTemplate->channel()->callbacks) > 0;
     }
 }

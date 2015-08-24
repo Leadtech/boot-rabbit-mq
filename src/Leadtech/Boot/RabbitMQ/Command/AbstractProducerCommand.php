@@ -62,7 +62,7 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
             // Create channel
             $queueTemplate = $this->producer->getQueueTemplate();
-            $channel = $queueTemplate->createChannel();
+            $channel = $queueTemplate->channel();
 
             try {
 

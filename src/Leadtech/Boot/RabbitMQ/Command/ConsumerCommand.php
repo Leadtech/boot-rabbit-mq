@@ -65,13 +65,12 @@ class ConsumerCommand extends AbstractAMQPCommand
 
             // Create channel
             $queueTemplate = $this->consumer->getQueueTemplate();
-            $channel = $queueTemplate->createChannel();
 
             // Prepare process
             $this->prepareProcess();
 
             // Iterate callbacks.
-            while ($this->canContinue($channel)) {
+            while ($this->canContinue()) {
 
                 // Execute pre process
                 $this->preProcess();
@@ -80,48 +79,31 @@ class ConsumerCommand extends AbstractAMQPCommand
                 // For more information see:
                 //  - Boot\RabbitMQ\Consumer\AbstractConsumer::__invoke(AMQPMessage $message)
                 //  - Boot\RabbitMQ\Consumer\ConsumerInterface::handle(AMQPMessage $message)
-                $channel->wait();
+                $this->consumer->wait();
 
                 // Execute post process
                 $this->postProcess();
             }
 
-            // Close channel
-            $channel->close();
+            // Close channel and connection
+            $queueTemplate->close();
+        } else {
 
-            // Close connection
-            $queueTemplate->getConnection()->close();
+           // throw new \RuntimeException("Failed to connect to rabbitMQ server.");
         }
 
         return $this->resultState;
     }
 
     /**
-     * @param AMQPChannel $channel
-     * @return int
-     */
-    protected function canContinue(AMQPChannel $channel)
-    {
-        return count($channel->callbacks);
-    }
-
-    /**
      * Connect to RabbitMQ
+     *
+     * @return bool
      */
     public function connect()
     {
-        // Declare queue
-        $queueTemplate = $this->consumer->getQueueTemplate();
-
-        // Connect to server
-        $connection = $queueTemplate->getConnection();
-        if (!$connection->isConnected()) {
-            $connection->reconnect();
-        }
-
-        // Declare queue
-        $queueTemplate->declareQueue();
-        $queueTemplate->declareQualityOfService();
+        // Connect consumer
+        $this->consumer->connect();
 
         return true;
     }
@@ -150,5 +132,13 @@ class ConsumerCommand extends AbstractAMQPCommand
     protected function preProcess()
     {
         // By default nothing happens, this method is just here to extended the functionality if needed.
+    }
+
+    /**
+     * @return bool
+     */
+    protected function canContinue()
+    {
+        return $this->consumer->isBusy();
     }
 }

@@ -22,6 +22,23 @@ interface ConsumerInterface
     public function listen();
 
     /**
+     * @return bool
+     */
+    public function connect();
+
+    /**
+     * Wait for incoming messages
+     *
+     * @return void
+     */
+    public function wait();
+
+    /**
+     * @return bool
+     */
+    public function isBusy();
+
+    /**
      * Get queue template
      *
      * @return QueueTemplate
