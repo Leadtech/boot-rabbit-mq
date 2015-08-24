@@ -62,7 +62,6 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
             // Create channel
             $queueTemplate = $this->producer->getQueueTemplate();
-            $channel = $queueTemplate->channel();
 
             try {
 
@@ -76,11 +75,8 @@ abstract class AbstractProducerCommand extends AbstractAMQPCommand
 
             }
 
-            // Close channel
-            $channel->close();
-
             // Close connection
-            $queueTemplate->getConnection()->close();
+            $queueTemplate->close();
         }
 
         return $this->resultState;
