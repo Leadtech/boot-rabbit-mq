@@ -2,26 +2,20 @@
 
 This library provides an easy to way to get up and running with RabbitMQ very quickly.
 To implement rabbitMQ you'll first need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s).
-Both the producer and the consumer classes use the same queue template.
-Once the template is available you have to subclass the AbstractConsumer class and implement the handle method.
-Incoming messages will be delegated to the consumer. The handle method returns either true or false indicating the success status.
+Both the producer and the consumer classes will use the same template.
+Once the template is available you'll have to subclass the AbstractConsumer class and implement a handle method.
+Incoming messages are delegated to this method. The handle method returns either true or false indicating the success status.
 
-To implement a producer simply instantiate or subclass `Boot\RabbitMQ\Producer\Producer` or Boot\RabbitMQ\Producer\BatchProducer
-providing the queue template instance in the constructor. Also, there is a command you can use to publish messages from the console.
-Supposing you are using dependency injection simply add the command and inject the Producer instance.
-
-### Dependencies
-
-This library has dependencies to:
-- Symfony2 console component
-- Symfony2 event dispatcher
-- PhpAmqpLib
+To implement a producer simply instantiate or subclass `Boot\RabbitMQ\Producer\Producer` or `Boot\RabbitMQ\Producer\BatchProducer`
+providing the queue template instance in the constructor. There is a command available that you can use to publish messages using the console.
+This command has a dependency to a Producer instance.
 
 
 ### Full example
 
 Full example of a fault tolerant queue. The messages are persisted and will survive a restart.
-The ACK/NACK signals are not sent automatically but handled explicitly by the client.
+The client is configured to sent ACK/NACK signals manually.
+
 
 #### Create worker.php
 
@@ -48,13 +42,14 @@ class ExampleConsumer extends AbstractConsumer
     {
         echo "Received message #{$message->body['sequence_number']}\n";
 
-        // Return true for success, an ACK signal is sent to the server. Alternatively an exception or returning false will result in a NACK signal instead.
+        // Return true for success, an ACK signal is sent to the server.
+        // Alternatively an exception or returning false will result in a NACK signal instead.
         return true;
     }
 
 }
 
-// Create event dispatcher (is optional)
+// Create event dispatcher (optional)
 $eventDispatcher = new EventDispatcher();
 
 // Create queue template
@@ -115,6 +110,39 @@ for($i=0;$i<=10;$i++) {
 }
 ```
 
+### Installation
+
+After installing RabbitMQ you'll have to setup a project. If you decide to go with boot checkout the examples
+folder. You will find a ready to use console application in there. If you want to start from scratch you will need to include
+the following packages in your composer.json file.
+
+*Installing Boot*
+```
+"require": {
+    "leadtech/boot": "^1.0",
+  }
+```
+
+*Installing Boot RabbitMQ*
+```
+"require": {
+    "leadtech/boot-rabbit-mq": "^1.0"
+  }
+```
+
+#### Requirements
+
+System requirements
+- PHP >= 5.4
+- RabbitMQ Server
+
+Required packages:
+- videlalvaro/php-amqplib
+- symfony/event-dispatcher
+- symfony/console
+- monolog/monolog
+
+
 ### Implementing queue workers as command line applications
 
 Although this library should work well with symfony2 applications or other frameworks based on symfony components this code was originally written
@@ -156,29 +184,6 @@ $console->getDefinition()->addOption(
 
 $console->run();
 ```
-
-
-
-# Installation
-
-After installing RabbitMQ you'll have to setup a project. If you decide to go with boot checkout the examples
-folder. You will find a ready to use console application in there. If you want to start from scratch you will need to include
-the following packages in your composer.json file.
-
-*Installing Boot*
-```
-"require": {
-    "leadtech/boot": "^1.0",
-  }
-```
-
-*Installing Boot RabbitMQ*
-```
-"require": {
-    "leadtech/boot-rabbit-mq": "^1.0"
-  }
-```
-
 
 
 # QueueTemplate
