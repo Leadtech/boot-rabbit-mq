@@ -8,7 +8,6 @@ Incoming messages are delegated to this method. The handle method returns either
 
 To implement a producer simply instantiate or subclass `Boot\RabbitMQ\Producer\Producer` or `Boot\RabbitMQ\Producer\BatchProducer`
 providing the queue template instance in the constructor. There is a command available that you can use to publish messages using the console.
-This command has a dependency to a Producer instance.
 
 
 ### Full example
@@ -193,22 +192,24 @@ The responsibility of the QueueTemplate is to provide a single setup that is spe
 Both the consumer and the producer depend on the same setup provided by the queue template.
 
 The QueueTemplate contains:
-- The connection  (same configuration must be used for both the producer and the consumer)
-- A message serializer
-- RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etcetera
-- A queue strategy
-- The event dispatcher
+- The connection  (same configuration must be used for both the producer and the consumer).
+- A message serializer.
+- RabbitMQ specific options such as the queue name, exchange, passiveness, exclusive connections etcetera.
+- A queue strategy.
+- The event dispatcher.
 
 
 #### What is a queue strategy?
 
 RabbitMQ is a powerful queuing server and there are numerous ways to use it. This library provides two configurations out of the box providing either a fault tolerant solution
 or a basic but faster setup.
-Configurations may require a specific setup of both the consumer and the producer.
+Configurations may require a specific setup of both the consuming as the producing application(s).
 
-A problem about many features is that it becomes easier to overlook something. The queue strategy provides a single point of configuration so that this logic
-is not scattered over other components and application. If either one of the them changes slightly it could break the intended functionality. The strategy is
-designed to simplify this process and improve the reliability of the setup possibly over different applications.
+A downside of many features is that it becomes easier to make mistakes along the way. Even more so when you have to deal with a number of
+teams. By providing the single point of configuration the queue template prevents queuing logic from being scattered
+across components and/or application(s).
+The strategy should both simplify the implementation of RabbitMQ and improve the reliability of the implementation amongst teams and applications.
+
 
 Creating a queue in memory which performs better but will not survive a crash:
 ```
