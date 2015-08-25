@@ -110,11 +110,57 @@ for($i=0;$i<=10;$i++) {
 }
 ```
 
+
+### Implementing queue workers as command line applications
+
+Although this library should work well with symfony2 applications or other frameworks based on symfony components this code was originally written
+to be used with Boot. Boot is a minimalistic framework build upon symfony's DependencyInjection, EventDispatcher and Console components and uses composer for
+package management and auto-loading. Boot is focused on minimalism and flexibility. Boot is very suitable for rapid development of console applications.
+Feel free to check out the PHPBoot repository.  You will find a ready to use console application in the examples folder.
+Boot provides a solution to implement your queues and commands using dependency injection without having to bootstrap the symfony framework
+for each worker.
+
+To bootstrap an application simply execute the following:
+
+```
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Get environment
+$input = new ArgvInput();
+$env = $input->getParameterOption(['--env', '-e'], 'dev');
+
+// Build application
+$rootDir = realpath(__DIR__ . '/..');
+$app = (new \Boot\Builder($rootDir))
+    ->appName('SomeConsumerApp')                                     # The name of the application
+    ->caching('cache', false)                                        # Enable/disable caching of the service container
+    ->environment($env)                                              # Set environment
+    ->path('resources/config')                                       # Service configuration (order matters)
+    ->path('src/Search/Resources/config')                            # Service configuration (order matters)
+    ->parameter('project_dir', $rootDir)                             # Register parameters to the service container.
+    ->beforeOptimization(new CommandCompilerPass)                    # Automatically register the commands to the console. Console commands must be tagged with a console_command tag.
+    ->build()
+;
+
+/** @var ConsoleApplication $console */
+$console = $app->get('console');
+$console->getDefinition()->addOption(
+    new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The environment name.', 'dev')
+);
+
+$console->run();
+```
+
+
+
 ### Installation
 
 After installing RabbitMQ you'll have to setup a project. If you decide to go with boot checkout the examples
 folder. You will find a ready to use console application in there. If you want to start from scratch you will need to include
-the following packages in your composer.json file.
+the following packages in your composer.json file. If you don't want to use boot and create your implementation of `symfony\console` than you
+can use this package without installing boot as well.
 
 *Installing Boot*
 ```
@@ -141,49 +187,6 @@ Required packages:
 - symfony/event-dispatcher
 - symfony/console
 - monolog/monolog
-
-
-### Implementing queue workers as command line applications
-
-Although this library should work well with symfony2 applications or other frameworks based on symfony components this code was originally written
-to be used with Boot. Boot is a minimalistic framework build upon symfony's DependencyInjection, EventDispatcher and Console components and uses composer for
-package management and auto-loading. Boot is focused on minimalism and flexibility. Boot is very suitable for rapid development of console applications.
-Feel free to check out the PHPBoot repository.  You will find a ready to use console application in the examples folder.
-Boot provides a solution to implement your queues and commands using dependency injection without having to bootstrap the symfony framework
-for each worker.
-
-To bootstrap an application simply execute the following:
-
-```
-#!/usr/bin/env php
-<?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
-// Get environment
-$input = new ArgvInput();
-$env = $input->getParameterOption(['--env', '-e'], 'dev');
-
-// Build application
-$rootDir = realpath(__DIR__ . '/..');
-$app = (new \Boot\Builder($rootDir))
-    ->appName('BeslistSearchQueueConsumer')                          # The name of the application
-    ->caching('cache', false)                                        # Enable/disable caching of the service container
-    ->environment($env)                                              # Set environment
-    ->path('resources/config')                                       # Service configuration (order matters)
-    ->path('src/Search/Resources/config')                            # Service configuration (order matters)
-    ->parameter('project_dir', $rootDir)                             # Register parameters to the service container.
-    ->beforeOptimization(new CommandCompilerPass)                    # Automatically register the commands to the console. Console commands must be tagged with a console_command tag.
-    ->build()
-;
-
-/** @var ConsoleApplication $console */
-$console = $app->get('console');
-$console->getDefinition()->addOption(
-    new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The environment name.', 'dev')
-);
-
-$console->run();
-```
 
 
 # QueueTemplate
