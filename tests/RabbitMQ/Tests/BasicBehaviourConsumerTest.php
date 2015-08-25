@@ -27,12 +27,11 @@ class BasicBehaviourConsumerTest extends AbstractRabbitMQTest
     public function setUp()
     {
         $this->queueTemplate = new QueueTemplate(
+            'some_test_queue',
             $this->createConnection(),
             new BasicBehaviour,
             $this->createEventDispatcher()
         );
-
-        $this->queueTemplate->setQueueName('some_test_queue');
 
         $this->consumer = $this->getMockForAbstractClass('Boot\RabbitMQ\Consumer\AbstractConsumer', [$this->queueTemplate], 'MockConsumer');
     }

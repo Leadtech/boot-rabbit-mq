@@ -45,12 +45,14 @@ class QueueTemplate
     protected $exclusive = false;
 
     /**
+     * @param string                   $queueName
      * @param AbstractAMQPConnection   $connection
      * @param QueueStrategy            $strategy
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(AbstractAMQPConnection $connection, QueueStrategy $strategy, $eventDispatcher = null)
+    public function __construct($queueName, AbstractAMQPConnection $connection, QueueStrategy $strategy, $eventDispatcher = null)
     {
+        $this->queueName = $queueName;
         $this->connection = $connection;
         $this->strategy = $strategy;
         $this->eventDispatcher = $eventDispatcher;
@@ -215,15 +217,6 @@ class QueueTemplate
     public function getQueueName()
     {
         return $this->queueName;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     * @param string $queueName
-     */
-    public function setQueueName($queueName)
-    {
-        $this->queueName = $queueName;
     }
 
     /**
