@@ -53,13 +53,13 @@ $eventDispatcher = new EventDispatcher();
 
 // Create queue template
 $queueTemplate = new \Boot\RabbitMQ\Template\QueueTemplate(
+    'some_queue_name',
     new AMQPConnection('localhost', 5672, 'guest', 'guest'),
     new FaultTolerantBehaviour,
     $eventDispatcher
 );
 
 $queueTemplate->setExclusive(false);
-$queueTemplate->setQueueName('example_queue_1');
 
 $eventDispatcher->addListener(RabbitMQ::ON_RECEIVE, function(ReceiveEvent $event){
     echo "Receiving a new message. Sequence number: {$event->getMessage()->body['sequence_number']}\n";
@@ -92,11 +92,12 @@ use Boot\RabbitMQ\Producer\Producer;
 
 $eventDispatcher = new EventDispatcher();
 $queueTemplate = new \Boot\RabbitMQ\Template\QueueTemplate(
+    'some_queue_name',
     new AMQPConnection('localhost', 5672, 'guest', 'guest'),
     new FaultTolerantBehaviour
 );
+
 $queueTemplate->setExclusive(false);
-$queueTemplate->setQueueName('example_queue_1');
 
 
 $producer = new Producer($queueTemplate);
@@ -213,12 +214,12 @@ The strategy should both simplify the implementation of RabbitMQ and improve the
 
 Creating a queue in memory which performs better but will not survive a crash:
 ```
-$queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\BasicBehaviour);
+$queueTemplate = new QueueTemplate('some_queue_name', $connection, new Boot\RabbitMQ\Strategy\BasicBehaviour);
 ```
 
 Or to create a fault tolerant queue instead we would do:
 ```
-$queueTemplate = new QueueTemplate($connection, new Boot\RabbitMQ\Strategy\FaultTolerantBehaviour);
+$queueTemplate = new QueueTemplate('some_queue_name', $connection, new Boot\RabbitMQ\Strategy\FaultTolerantBehaviour);
 ```
 
 #### Implementing a custom strategy
