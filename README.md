@@ -114,7 +114,7 @@ for($i=0;$i<=10;$i++) {
 }
 ```
 
-### Real world example
+### Implementing queue workers as command line applications
 
 Although this library should work well with symfony2 applications or other frameworks based on symfony components this code was originally written
 to be used with Boot. Boot is a minimalistic framework build upon symfony's DependencyInjection, EventDispatcher and Console components and uses composer for
@@ -574,7 +574,7 @@ class EncryptedJsonSerializer implements SerializerInterface
 }
 ```
 
-*While writing this code I realized that this would not be a bad addition. So I by the time I release this document this serializer will be add a serializer that uses encryption as well. :-)*
+*While writing this example I realized that this would be a useful addition. So I added a serializer that uses encryption as well. :-)*
 
 
 
