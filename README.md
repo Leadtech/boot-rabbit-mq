@@ -1,11 +1,12 @@
 # Quickstart
 
 This library provides an easy to way to get up and running with RabbitMQ very quickly.
-To use rabbitMQ you'll first need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s).
-The same template is meant to be reused for both the producer and the consumer.
-Once the template is in place you have to subclass the AbstractConsumer class and implement the handle method.
-Incoming messages from the queue as defined in the template shall be delegated to the consumer.
-To implement a message producer simply instantiate or subclass Boot\RabbitMQ\Producer\Producer or Boot\RabbitMQ\Producer\BatchProducer
+To implement rabbitMQ you'll first need to create an instance of the QueueTemplate class. This class represents a single line of communication between consumer(s) and producer(s).
+Both the producer and the consumer classes use the same queue template.
+Once the template is available you have to subclass the AbstractConsumer class and implement the handle method.
+Incoming messages will be delegated to the consumer. The handle method returns either true or false indicating the success status.
+
+To implement a producer simply instantiate or subclass `Boot\RabbitMQ\Producer\Producer` or Boot\RabbitMQ\Producer\BatchProducer
 providing the queue template instance in the constructor. Also, there is a command you can use to publish messages from the console.
 Supposing you are using dependency injection simply add the command and inject the Producer instance.
 
@@ -19,8 +20,8 @@ This library has dependencies to:
 
 ### Full example
 
-Full example of a fault tolerant queue. The messages are persisted and will sursive a restart. Further more,
-the ACK/NACK signals are not sent automatically but handled explicitly by the client.
+Full example of a fault tolerant queue. The messages are persisted and will survive a restart.
+The ACK/NACK signals are not sent automatically but handled explicitly by the client.
 
 #### Create worker.php
 
@@ -340,7 +341,7 @@ The listen method will:
 
 
 
-We will not receive messages just yet. To start receiving messages we must execute:
+We are processing the messages just yet. To start accepting incoming messages we must execute:
 
 ```
 // Start receiving
@@ -352,7 +353,7 @@ while ($consumer->isBusy()) {
 
 
 
-### Attach to consumer events
+### Listen to consumer events
 
 The customer provides additional functionality to make it easy for other components to attach additional functionality.
 The following events are implemented:
