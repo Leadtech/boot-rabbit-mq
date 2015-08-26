@@ -28,5 +28,8 @@
       "Boot\\": "src/Leadtech/Boot/",
       "Boot\\RabbitMQ\\Tests\\": "tests/RabbitMQ/Tests/"
     }
+  },
+  "suggest": {
+    "leadtech/boot": "A very minimalistic but powerful 'nano' framework well suited for console applications and micro-services."
   }
 }

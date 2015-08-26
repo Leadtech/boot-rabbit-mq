@@ -3,6 +3,10 @@ namespace Boot\RabbitMQ\Producer;
 
 use Boot\RabbitMQ\Producer\Exception\PublishMessageException;
 
+/**
+ * Class BatchProducer
+ * @package Boot\RabbitMQ\Producer
+ */
 class BatchProducer extends AbstractProducer implements BatchProducerInterface
 {
     /**

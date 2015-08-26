@@ -1,6 +1,10 @@
 <?php
 namespace Boot\RabbitMQ\Serializer;
 
+/**
+ * Class JsonSerializer
+ * @package Boot\RabbitMQ\Serializer
+ */
 class JsonSerializer implements SerializerInterface
 {
     /**

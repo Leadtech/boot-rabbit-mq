@@ -4,6 +4,10 @@ namespace Boot\RabbitMQ\Consumer;
 use Boot\RabbitMQ\Template\QueueTemplate;
 use PhpAmqpLib\Message\AMQPMessage;
 
+/**
+ * Interface ConsumerInterface
+ * @package Boot\RabbitMQ\Consumer
+ */
 interface ConsumerInterface
 {
     /**

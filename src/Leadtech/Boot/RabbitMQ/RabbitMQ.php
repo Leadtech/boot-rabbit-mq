@@ -1,6 +1,10 @@
 <?php
 namespace Boot\RabbitMQ;
 
+/**
+ * Class RabbitMQ
+ * @package Boot\RabbitMQ
+ */
 final class RabbitMQ
 {
     const DELIVERY_MODE_PERSISTENT = 2;

@@ -3,6 +3,10 @@ namespace Boot\RabbitMQ\Producer;
 
 use Boot\RabbitMQ\Template\QueueTemplate;
 
+/**
+ * Interface ProducerInterface
+ * @package Boot\RabbitMQ\Producer
+ */
 interface ProducerInterface
 {
     /**

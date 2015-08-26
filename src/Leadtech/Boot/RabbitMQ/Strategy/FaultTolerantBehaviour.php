@@ -5,6 +5,10 @@ use Boot\RabbitMQ\RabbitMQ;
 use Boot\RabbitMQ\Template\QueueTemplate;
 use PhpAmqpLib\Message\AMQPMessage;
 
+/**
+ * Class FaultTolerantBehaviour
+ * @package Boot\RabbitMQ\Strategy
+ */
 class FaultTolerantBehaviour extends QueueStrategy
 {
     const ACKNOWLEDGE_MANUALLY = true;

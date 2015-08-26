@@ -4,6 +4,10 @@ namespace Boot\RabbitMQ\Strategy;
 use Boot\RabbitMQ\Template\QueueTemplate;
 use PhpAmqpLib\Message\AMQPMessage;
 
+/**
+ * Class QueueStrategy
+ * @package Boot\RabbitMQ\Strategy
+ */
 abstract class QueueStrategy
 {
     /**
