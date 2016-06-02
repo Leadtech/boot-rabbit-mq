@@ -111,16 +111,13 @@ for($i=0;$i<=10;$i++) {
 ```
 
 
-### Implementing queue workers as command line applications
+### Implementing queue workers as command line using boot
 
-Although this library should work well with symfony2 applications or other frameworks based on symfony components this code was originally written
-to be used with Boot. Boot is a minimalistic framework build upon symfony's DependencyInjection, EventDispatcher and Console components and uses composer for
-package management and auto-loading. Boot is focused on minimalism and flexibility. Boot is very suitable for rapid development of console applications.
-Feel free to check out the PHPBoot repository.  You will find a ready to use console application in the examples folder.
-Boot provides a solution to implement your queues and commands using dependency injection without having to bootstrap the symfony framework
-for each worker.
+Boot is a minimalistic framework build upon symfony components such as DependencyInjection, EventDispatcher and Console components and relies solely on composer for package management and auto-loading. Boot was created to provide a very basic yet elegant way to bootstrap an application.
 
-To bootstrap an application simply execute the following:
+Boot makes it very easy to create a console application to run a queue worker.
+
+This is an example of how to bootstrap a console application: 
 
 ```
 #!/usr/bin/env php
